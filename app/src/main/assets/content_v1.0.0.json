@@ -1,0 +1,349 @@
+{
+  "$schema": "https://panduanhaji2027.org/schemas/content-v1.json",
+  "version": "1.0.0",
+  "revision_date": "2026-10-24",
+  "approved_by": "Ustadz Pembimbing Rombongan",
+  "hajj_year": 1448,
+  "hajj_type_primary": "TAMATTU",
+  "notes": "Disusun secara otentik dari 8 ringkasan materi haji dan umrah. Menyajikan pilihan rombongan dengan catatan 10 titik perbedaan fikih.",
+  "days": [
+    {
+      "day_id": "day_before_departure",
+      "hijri_day": 0,
+      "hijri_month": 11,
+      "title": "Sebelum Berangkat — Persiapan Hati, Tobat, dan Badal",
+      "location": "Tanah Air",
+      "summary": "Memahami hakikat haji mabrur, membersihkan hati dari riya dan ujub, menyelesaikan hak sesama manusia, serta memperbarui tobat.",
+      "activities": [
+        {
+          "activity_id": "act_prep_heart",
+          "sequence_order": 1,
+          "title": "Persiapan Hati dan Keikhlasan Niat",
+          "ruling_category": "WAJIB",
+          "time_window": "Sebelum keberangkatan ke asrama haji",
+          "steps": [
+            {
+              "step_id": "step_prep_01",
+              "order": 1,
+              "instruction": "Ikhlaskan niat semata-mata mencari ridha Allah, bukan gelar, status sosial, atau pujian orang lain.",
+              "prohibitions": ["riya", "ujub", "sum'ah"]
+            },
+            {
+              "step_id": "step_prep_02",
+              "order": 2,
+              "instruction": "Menyelesaikan hak sesama manusia: memohon maaf kepada orang yang pernah dirugikan atau disakiti, melunasi utang, dan mengembalikan amanah.",
+              "prohibitions": ["zalim"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day_id": "day_preparation_miqat",
+      "hijri_day": 0,
+      "hijri_month": 11,
+      "title": "Persiapan Ihram, Miqat, dan Perjalanan ke Makkah",
+      "location": "Bir Ali / Pesawat Udara",
+      "summary": "Mandi sunah ihram, mengenakan pakaian ihram, berniat umrah di miqat makani, membaca talbiah, dan menjauhi seluruh larangan ihram.",
+      "activities": [
+        {
+          "activity_id": "act_miqat_niat",
+          "sequence_order": 1,
+          "title": "Mengambil Miqat dan Niat Ihram Umrah",
+          "ruling_category": "RUKUN",
+          "time_window": "Di Bir Ali (Zulhulaifah) atau di atas pesawat sebelum melintasi garis miqat",
+          "steps": [
+            {
+              "step_id": "step_miqat_01",
+              "order": 1,
+              "instruction": "Mandi sunah ihram, memotong kuku, dan mengenakan pakaian ihram (laki-laki 2 lembar kain tanpa jahitan membentuk tubuh; perempuan pakaian menutup aurat tanpa cadar/sarung tangan).",
+              "prohibitions": ["pakaian_berjahit_pria", "tutup_kepala_pria", "cadar_sarung_tangan_wanita"]
+            },
+            {
+              "step_id": "step_miqat_02",
+              "order": 2,
+              "instruction": "Berniat ihram umrah untuk haji Tamattu' saat kendaraan mulai bergerak meninggalkan miqat.",
+              "readings": [
+                {
+                  "reading_id": "read_niat_umrah",
+                  "title": "Lafaz Niat Umrah",
+                  "arabic_text": "لَبَّيْكَ اللَّهُمَّ عُمْرَةً",
+                  "latin_transliteration": "Labbaika Allahumma 'umratan.",
+                  "translation_id": "Aku penuhi panggilan-Mu ya Allah untuk melaksanakan umrah.",
+                  "source_ref": "Hadits riwayat Bukhari & Muslim."
+                }
+              ]
+            },
+            {
+              "step_id": "step_miqat_03",
+              "order": 3,
+              "instruction": "Memperbanyak bacaan talbiah selama perjalanan menuju Makkah dengan suara dikeraskan bagi laki-laki.",
+              "readings": [
+                {
+                  "reading_id": "read_talbiah_utama",
+                  "title": "Talbiah Rasulullah ﷺ",
+                  "arabic_text": "لَبَّيْكَ اللَّهُمَّ لَبَّيْكَ، لَبَّيْكَ لَا شَرِيكَ لَكَ لَبَّيْكَ، إِنَّ الْحَمْدَ وَالنِّعْمَةَ لَكَ وَالْمُلْكَ، لَا شَرِيكَ لَكَ",
+                  "latin_transliteration": "Labbaika Allahumma labbaik, labbaika laa syariika laka labbaik, innal hamda wan ni'mata laka wal mulk, laa syariika lak.",
+                  "translation_id": "Aku penuhi panggilan-Mu ya Allah, aku penuhi panggilan-Mu. Tidak ada sekutu bagi-Mu, aku penuhi panggilan-Mu. Sesungguhnya segala puji, nikmat, dan kerajaan adalah milik-Mu. Tidak ada sekutu bagi-Mu.",
+                  "source_ref": "HR. Bukhari no. 1549 dan Muslim no. 19."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day_id": "day_umrah_tamattu",
+      "hijri_day": 4,
+      "hijri_month": 12,
+      "title": "Pelaksanaan Umrah Tamattu' di Masjidil Haram",
+      "location": "Makkah / Masjidil Haram",
+      "summary": "Tawaf mengelilingi Ka'bah 7 putaran, salat sunah di belakang Maqam Ibrahim, minum air Zamzam, sa'i Safa-Marwah, dan tahalul (potong rambut).",
+      "activities": [
+        {
+          "activity_id": "act_tawaf_umrah",
+          "sequence_order": 1,
+          "title": "Tawaf Umrah (7 Putaran)",
+          "ruling_category": "RUKUN",
+          "steps": [
+            {
+              "step_id": "step_tawaf_01",
+              "order": 1,
+              "instruction": "Laki-laki membuka bahu kanan (Idtiba'). Memulai putaran sejajar Hajar Aswad (ditandai lampu hijau) sambil mengucap Bismillahi Allahu Akbar.",
+              "readings": [
+                {
+                  "reading_id": "read_rukun_yamani",
+                  "title": "Doa Antara Rukun Yamani dan Hajar Aswad",
+                  "arabic_text": "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ",
+                  "latin_transliteration": "Rabbana aatina fid-dunya hasanah wa fil-aakhirati hasanah wa qinaa 'adzaaban-naar.",
+                  "translation_id": "Wahai Rabb kami, berikanlah kami kebaikan di dunia dan kebaikan di akhirat, dan lindungilah kami dari siksa neraka.",
+                  "source_ref": "HR. Abu Dawud no. 1892."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "activity_id": "act_sai_tahalul",
+          "sequence_order": 2,
+          "title": "Sa'i dan Tahalul Umrah",
+          "ruling_category": "RUKUN",
+          "steps": [
+            {
+              "step_id": "step_sai_01",
+              "order": 1,
+              "instruction": "Mulai dari Bukit Safa menghadap kiblat, bertakbir 3 kali, membaca zikir, dan berjalan 7 lintasan hingga berakhir di Marwah.",
+              "readings": [
+                {
+                  "reading_id": "read_lampu_hijau_sai",
+                  "title": "Doa Saat Melewati Dua Lampu Hijau",
+                  "arabic_text": "رَبِّ اغْفِرْ وَارْحَمْ إِنَّكَ أَنْتَ الأَعَزُّ الأَكْرَمُ",
+                  "latin_transliteration": "Rabbighfir warham innaka antal a'azzul akram.",
+                  "translation_id": "Wahai Rabbku, ampunilah dan rahmatilah, sesungguhnya Engkau Mahamulia dan Mahaagung.",
+                  "source_ref": "Riwayat Ibnu Umar & Ibnu Abbas, sanad shahih menurut Syaikh Al-Albani."
+                }
+              ]
+            },
+            {
+              "step_id": "step_tahalul_umrah",
+              "order": 2,
+              "instruction": "Memotong atau mencukur rambut di bukit Marwah. Laki-laki memendekkan rambut (jangan digundul habis agar tersisa untuk haji); perempuan memotong sepanjang satu ruas jari.",
+              "differences_note": {
+                "has_ikhtilaf": true,
+                "summary": "Ringkasan 7 menyatakan tahalul hukumnya wajib, sedangkan Ringkasan 3 menyatakan rukun. Seluruhnya sepakat tahalul mutlak dikerjakan untuk mengakhiri ihram umrah."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day_id": "day_08_zulhijah",
+      "hijri_day": 8,
+      "hijri_month": 12,
+      "title": "8 Zulhijah — Hari Tarwiyah (Mabit di Mina)",
+      "location": "Mina",
+      "summary": "Memulai ihram haji dari hotel, berniat haji, berangkat ke Mina, dan mengerjakan lima waktu salat diqasar tanpa jamak.",
+      "activities": [
+        {
+          "activity_id": "act_tarwiyah_mina",
+          "sequence_order": 1,
+          "title": "Ihram Haji & Menuju Mina",
+          "ruling_category": "SUNAH",
+          "time_window": "Waktu Dhuha hingga sebelum Dzuhur",
+          "steps": [
+            {
+              "step_id": "step_tarwiyah_01",
+              "order": 1,
+              "instruction": "Mandi dan berihram haji dari tempat menginap di Makkah. Ucapkan Labbaika Hajjan.",
+              "readings": [
+                {
+                  "reading_id": "read_niat_haji",
+                  "title": "Lafaz Niat Haji",
+                  "arabic_text": "لَبَّيْكَ حَجًّا",
+                  "latin_transliteration": "Labbaika hajjan.",
+                  "translation_id": "Aku penuhi panggilan-Mu untuk berhaji."
+                }
+              ]
+            },
+            {
+              "step_id": "step_tarwiyah_02",
+              "order": 2,
+              "instruction": "Mabit di Mina dan mengerjakan salat Dzuhur, Ashar, Maghrib, Isya, dan Subuh pada waktunya masing-masing diqasar.",
+              "differences_note": {
+                "has_ikhtilaf": true,
+                "summary": "Ringkasan 2, 5, 8 menyebut salat di Mina diqasar tanpa jamak (sunah utama). Ringkasan 6 menyebut Dzuhur-Ashar dapat dijamak jika kondisi rombongan menuntutnya."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day_id": "day_09_zulhijah",
+      "hijri_day": 9,
+      "hijri_month": 12,
+      "title": "9 Zulhijah — Hari Arafah (Wukuf Puncak Haji)",
+      "location": "Padang Arafah",
+      "summary": "Rukun haji terpenting: mendengarkan khutbah Arafah, salat jamak qasar Dzuhur-Ashar, wukuf dan memperbanyak doa hingga terbenam matahari.",
+      "activities": [
+        {
+          "activity_id": "act_wukuf_arafah",
+          "sequence_order": 1,
+          "title": "Wukuf di Arafah",
+          "ruling_category": "RUKUN",
+          "time_window": "Setelah tergelincir matahari (Dzuhur) hingga terbenam matahari",
+          "steps": [
+            {
+              "step_id": "step_arafah_01",
+              "order": 1,
+              "instruction": "Memastikan diri berada di dalam batas resmi Arafah, mendengarkan khutbah di tenda/masjid, lalu salat Dzuhur dan Ashar jamak taqdim qasar.",
+              "prohibitions": ["keluar_batas_arafah_sebelum_maghrib"]
+            },
+            {
+              "step_id": "step_arafah_02",
+              "order": 2,
+              "instruction": "Menghadap kiblat, mengangkat tangan, dan memperbanyak doa serta zikir tahlil Arafah hingga Maghrib tiba.",
+              "readings": [
+                {
+                  "reading_id": "read_tahlil_arafah",
+                  "title": "Zikir Utama Hari Arafah",
+                  "arabic_text": "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
+                  "latin_transliteration": "Laa ilaaha illallaahu wahdahu laa syariika lah, lahul mulku wa lahul hamdu wa huwa 'alaa kulli syai-in qadiir.",
+                  "translation_id": "Tidak ada sesembahan yang berhak disembah selain Allah semata, tidak ada sekutu bagi-Nya. Milik-Nya segala kerajaan dan pujian, dan Dia Mahakuasa atas segala sesuatu.",
+                  "source_ref": "HR. Tirmidzi no. 3585."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day_id": "day_night_10_zulhijah",
+      "hijri_day": 9,
+      "hijri_month": 12,
+      "title": "Malam 10 Zulhijah — Mabit di Muzdalifah",
+      "location": "Muzdalifah",
+      "summary": "Bertolak dari Arafah setelah Maghrib, mengerjakan salat Maghrib-Isya jamak takhir di Muzdalifah, mabit (bermalam), dan mengumpulkan kerikil.",
+      "activities": [
+        {
+          "activity_id": "act_mabit_muzdalifah",
+          "sequence_order": 1,
+          "title": "Salat Jamak Takhir & Mabit",
+          "ruling_category": "WAJIB",
+          "steps": [
+            {
+              "step_id": "step_muzdalifah_01",
+              "order": 1,
+              "instruction": "Tiba di Muzdalifah, salat Maghrib (3 rakaat) dan Isya (2 rakaat) secara jamak takhir dengan 1 adzan 2 iqamah sebelum makan atau menggelar kasur.",
+              "prohibitions": ["salat_maghrib_di_arafah"]
+            },
+            {
+              "step_id": "step_muzdalifah_02",
+              "order": 2,
+              "instruction": "Tidur istirahat hingga Subuh. Orang yang lemah (lansia, wanita, anak) diberi dispensasi boleh keluar Muzdalifah setelah tengah malam menuju Mina.",
+              "readings": [
+                {
+                  "reading_id": "read_masyaril_haram",
+                  "title": "Zikir di Masy'aril Haram Setelah Subuh",
+                  "arabic_text": "فَإِذَا أَفَضْتُمْ مِنْ عَرَفَاتٍ فَاذْكُرُوا اللَّهَ عِنْدَ الْمَشْعَرِ الْحَرَامِ",
+                  "latin_transliteration": "Fa-idzaa afadhtum min 'Arafaatin fadzkurullaaha 'indal Masy'aril Haraam.",
+                  "translation_id": "Maka apabila kamu telah bertolak dari Arafah, berdzikirlah kepada Allah di Masy'aril Haram (QS. Al-Baqarah: 198)."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day_id": "day_10_zulhijah",
+      "hijri_day": 10,
+      "hijri_month": 12,
+      "title": "10 Zulhijah — Hari Nahar (Jumrah Aqabah, Hadyu, Tahalul, Tawaf Ifadah)",
+      "location": "Mina & Makkah",
+      "summary": "Melontar Jumrah Aqabah 7 kerikil, menyembelih hadyu, mencukur rambut (tahalul awal), dan tawaf ifadah di Masjidil Haram (tahalul sempurna).",
+      "activities": [
+        {
+          "activity_id": "act_jumrah_aqabah_tahalul",
+          "sequence_order": 1,
+          "title": "Jumrah Aqabah & Tahalul Awal",
+          "ruling_category": "WAJIB",
+          "steps": [
+            {
+              "step_id": "step_aqabah_01",
+              "order": 1,
+              "instruction": "Melontar Jumrah Aqabah tepat 7 batu kerikil satu per satu sambil bertakbir Allahu Akbar di setiap lemparan. Setelah lemparan pertama, bacaan talbiah dihentikan.",
+              "prohibitions": ["melempar_7_batu_sekaligus", "melempar_jumrah_ula_wusta_hari_nahar"]
+            },
+            {
+              "step_id": "step_tahalul_nahar",
+              "order": 2,
+              "instruction": "Mencukur gundul bagi laki-laki (lebih utama) atau memendekkan rambut. Perempuan memotong ujung rambut satu ruas jari. Ini adalah Tahalul Awal.",
+              "differences_note": {
+                "has_ikhtilaf": true,
+                "summary": "Tawaf Ifadah dianjurkan dilakukan pada 10 Zulhijah. Namun pemateri (Ringkasan 6) menyarankan jemaah menunda tawaf ifadah setelah seluruh rangkaian di Mina selesai (13 Zulhijah) demi menjaga kebugaran fisik lansia."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day_id": "day_11_13_zulhijah",
+      "hijri_day": 11,
+      "hijri_month": 12,
+      "title": "11–13 Zulhijah — Hari Tasyrik (Mabit di Mina & Lempar 3 Jumrah)",
+      "location": "Mina",
+      "summary": "Mabit di Mina dan melontar tiga jumrah (Ula, Wusta, Aqabah) masing-masing 7 kerikil setiap hari setelah tergelincir matahari (zawal).",
+      "activities": [
+        {
+          "activity_id": "act_jumrah_tasyrik",
+          "sequence_order": 1,
+          "title": "Melontar Tiga Jumrah Setiap Hari Tasyrik",
+          "ruling_category": "WAJIB",
+          "time_window": "Setelah zawal (Dzuhur) hingga malam hari",
+          "steps": [
+            {
+              "step_id": "step_tasyrik_01",
+              "order": 1,
+              "instruction": "Urutan melontar wajib tertib: Jumrah Ula (7 batu), berdoa menghadap kiblat; Jumrah Wusta (7 batu), berdoa menghadap kiblat; lalu Jumrah Aqabah (7 batu) tanpa berdoa setelahnya.",
+              "prohibitions": ["melontar_sebelum_zawal", "membalik_urutan_jumrah"]
+            },
+            {
+              "step_id": "step_tasyrik_nafar",
+              "order": 2,
+              "instruction": "Nafar Awal: Meninggalkan Mina pada 12 Zulhijah sebelum Maghrib. Nafar Tsani: Menyempurnakan mabit hingga 13 Zulhijah dan melontar pada hari ke-13.",
+              "differences_note": {
+                "has_ikhtilaf": false,
+                "summary": "Nafar awal dan tsani keduanya sah dan dicontohkan dalam syariat. Jemaah mengikuti arahan maktab rombongan."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
