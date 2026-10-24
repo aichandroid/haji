@@ -22,18 +22,29 @@
 | **Tahap X**  | Technical & Security Audit Checklist | ✅ **SELESAI** | 24-10-2026 | Checklist pra-rilis APK, verifikasi tanda tangan offline keystore. |
 | **Tahap XI** | Roadmap & AI Agent Task Breakdown | ✅ **SELESAI** | 24-10-2026 | 18 Tugas berurutan (*thin vertical slices*) berbasis dependensi. |
 | **Tahap XII**| CI/CD, Sideloading, Runbook, & Biaya | ✅ **SELESAI** | 24-10-2026 | Skenario biaya < $30, RTM lengkap, Glosarium manasik/teknis. |
-| **Fase 0**   | Baseline Konten Manasik (`content_v1.0.0.json`)| 🟡 **IN PROGRESS** | - | Ekstraksi terstruktur dari `ringkasan.md` ke format JSON. |
-| **TASK-01**  | Setup Multi-Module & Design System | 🟡 **IN PROGRESS** | - | Scaffolding Gradle multi-module & modul `:core:designsystem`. |
-| **TASK-02**  | Model Domain Manasik & Parser JSON | ⚪ *QUEUED* | - | Modul `:core:model` & parser data. |
+| **Fase 0**   | Baseline Konten Manasik (`content_v1.0.0.json`)| ✅ **SELESAI** | 24-10-2026 | Berkas JSON valid 8 hari manasik, doa Arab, & 10 ikhtilaf. |
+| **TASK-01**  | Setup Multi-Module & Design System | ✅ **SELESAI** | 24-10-2026 | Scaffolding 9 modul Gradle, Version Catalog, Design Tokens. |
+| **TASK-02**  | Model Domain Manasik & Parser JSON | 🟡 **NEXT** | - | Modul `:core:model` & parser data. |
 | **TASK-03**  | Mesin Kalender Hijrah & Date Override | ⚪ *QUEUED* | - | Modul `:core:common` (`HijriCalendarEngine`). |
 | **TASK-04**  | Room DB: Checklist & FTS4 Search Table | ⚪ *QUEUED* | - | Modul `:core:database` (Room SQLite). |
 
 ---
 
-## 2. LOG EKSEKUSI TUGAS AKTIF
+## 2. LOG EKSEKUSI TUGAS SELESAI
 
-### TASK-01: Setup Multi-Module & Design System + Fase 0 Baseline Konten
-- **Slice 1.1:** Setup Root Multi-Module Gradle (`settings.gradle.kts`, `build.gradle.kts`, `gradle/libs.versions.toml`, `gradle-wrapper.properties`).
-- **Slice 1.2:** Modul `:core:designsystem` (`Color.kt`, `Type.kt`, `Dimens.kt`, `Theme.kt`).
-- **Slice 1.3:** Baseline Konten Manasik (`app/src/main/assets/content_v1.0.0.json`).
-- **Slice 1.4:** Unit Test `:core:designsystem` (`TokensTest.kt`).
+### TASK-01 & Fase 0 (Selesai pada Commit: e775d3a)
+- **Slice 1.1 (Multi-Module Gradle Scaffolding):**
+  - `gradle/libs.versions.toml`: Version catalog modern (Kotlin 2.0.21, AGP 8.7.1, Compose BOM 2024.10.00, Hilt 2.52, Room 2.6.1).
+  - `settings.gradle.kts`: Konfigurasi multi-module 9 modul terisolasi (`:app`, `:core:designsystem`, `:core:common`, `:core:database`, `:core:model`, `:feature:guide`, `:feature:places`, `:feature:tracking`, `:feature:settings`).
+  - `build.gradle.kts` & `gradle/wrapper/gradle-wrapper.properties` (Gradle 8.10.2).
+- **Slice 1.2 (Core Design System `:core:designsystem`):**
+  - `Color.kt`: Palet warna *Accessible & Ethical* (Navy `#0C4A6E`, Trust Blue `#0369A1`, Hajj Green `#15803D`, Anti-Glare Background `#F8FAFC`, Status Sensor Kompas).
+  - `Dimens.kt`: Standar aksesibilitas lansia (`MinTouchTargetSize = 56.dp`, `TouchTargetGap = 12.dp`, Irama spasi 8dp).
+  - `Type.kt`: Atkinson Hyperlegible & Amiri Quran (Arabic 24-28sp, Body 18sp, Title 22sp).
+  - `Theme.kt`: Composable wrapper `HajjTheme` dengan penegakan status bar dinamis.
+  - `TokensTest.kt`: Unit test verifikasi kepatuhan target sentuh $\ge 56\text{ dp}$ dan kontras token.
+- **Slice 1.3 (Baseline Konten Manasik `content_v1.0.0.json`):**
+  - Tersimpan di `app/src/main/assets/content_v1.0.0.json`.
+  - Berisi 8 fase/hari manasik terstruktur, teks doa Arab berharakat, transliterasi Latin, terjemahan, dan 10 catatan perbedaan fikih terverifikasi dari `ringkasan.md`.
+- **Slice 1.4 (Git Repository & Version Control):**
+  - Repository git diinisialisasi pada branch `main` dengan `.gitignore` Android standar. Commit awal: `e775d3a`.
