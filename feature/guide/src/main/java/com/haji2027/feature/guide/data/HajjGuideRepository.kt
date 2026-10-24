@@ -11,4 +11,5 @@ interface HajjGuideRepository {
     suspend fun getAllDays(): List<HajjDay>
     suspend fun getDayById(dayId: String): HajjDay?
     suspend fun getDayByHijri(hijriDay: Int, hijriMonth: Int): HajjDay?
+    suspend fun getReadingById(readingId: String): com.haji2027.core.model.DoaReading?
 }

@@ -26,13 +26,21 @@
               "step_id": "step_prep_01",
               "order": 1,
               "instruction": "Ikhlaskan niat semata-mata mencari ridha Allah, bukan gelar, status sosial, atau pujian orang lain.",
-              "prohibitions": ["riya", "ujub", "sum'ah"]
+              "prohibitions": [
+                "riya",
+                "ujub",
+                "sum'ah"
+              ],
+              "readings": []
             },
             {
               "step_id": "step_prep_02",
               "order": 2,
               "instruction": "Menyelesaikan hak sesama manusia: memohon maaf kepada orang yang pernah dirugikan atau disakiti, melunasi utang, dan mengembalikan amanah.",
-              "prohibitions": ["zalim"]
+              "prohibitions": [
+                "zalim"
+              ],
+              "readings": []
             }
           ]
         }
@@ -57,7 +65,12 @@
               "step_id": "step_miqat_01",
               "order": 1,
               "instruction": "Mandi sunah ihram, memotong kuku, dan mengenakan pakaian ihram (laki-laki 2 lembar kain tanpa jahitan membentuk tubuh; perempuan pakaian menutup aurat tanpa cadar/sarung tangan).",
-              "prohibitions": ["pakaian_berjahit_pria", "tutup_kepala_pria", "cadar_sarung_tangan_wanita"]
+              "prohibitions": [
+                "pakaian_berjahit_pria",
+                "tutup_kepala_pria",
+                "cadar_sarung_tangan_wanita"
+              ],
+              "readings": []
             },
             {
               "step_id": "step_miqat_02",
@@ -70,7 +83,15 @@
                   "arabic_text": "لَبَّيْكَ اللَّهُمَّ عُمْرَةً",
                   "latin_transliteration": "Labbaika Allahumma 'umratan.",
                   "translation_id": "Aku penuhi panggilan-Mu ya Allah untuk melaksanakan umrah.",
-                  "source_ref": "Hadits riwayat Bukhari & Muslim."
+                  "source_ref": "HR. Bukhari & Muslim (Rujukan: Muslim.or.id & Rumaysho.com)"
+                },
+                {
+                  "reading_id": "read_isytirat",
+                  "title": "Doa Isytirat (Bagi Jemaah yang Khawatir Terhalang/Sakit)",
+                  "arabic_text": "اللَّهُمَّ مَحِلِّي حَيْثُ حَبَسْتَنِي",
+                  "latin_transliteration": "Allahumma mahilli haitsu habastani.",
+                  "translation_id": "Ya Allah, tempat tahalulku adalah di mana saja Engkau menahanku.",
+                  "source_ref": "HR. Bukhari no. 5089 & Muslim no. 1207 (Rujukan: Rumaysho.com & Yufid.com)"
                 }
               ]
             },
@@ -85,7 +106,7 @@
                   "arabic_text": "لَبَّيْكَ اللَّهُمَّ لَبَّيْكَ، لَبَّيْكَ لَا شَرِيكَ لَكَ لَبَّيْكَ، إِنَّ الْحَمْدَ وَالنِّعْمَةَ لَكَ وَالْمُلْكَ، لَا شَرِيكَ لَكَ",
                   "latin_transliteration": "Labbaika Allahumma labbaik, labbaika laa syariika laka labbaik, innal hamda wan ni'mata laka wal mulk, laa syariika lak.",
                   "translation_id": "Aku penuhi panggilan-Mu ya Allah, aku penuhi panggilan-Mu. Tidak ada sekutu bagi-Mu, aku penuhi panggilan-Mu. Sesungguhnya segala puji, nikmat, dan kerajaan adalah milik-Mu. Tidak ada sekutu bagi-Mu.",
-                  "source_ref": "HR. Bukhari no. 1549 dan Muslim no. 19."
+                  "source_ref": "HR. Bukhari no. 1549 & Muslim no. 19 (Rujukan: Muslim.or.id, Rumaysho.com & Almanhaj.or.id)"
                 }
               ]
             }
@@ -118,7 +139,15 @@
                   "arabic_text": "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ",
                   "latin_transliteration": "Rabbana aatina fid-dunya hasanah wa fil-aakhirati hasanah wa qinaa 'adzaaban-naar.",
                   "translation_id": "Wahai Rabb kami, berikanlah kami kebaikan di dunia dan kebaikan di akhirat, dan lindungilah kami dari siksa neraka.",
-                  "source_ref": "HR. Abu Dawud no. 1892."
+                  "source_ref": "HR. Abu Dawud no. 1892 (Rujukan: Muslim.or.id & Rumaysho.com)"
+                },
+                {
+                  "reading_id": "read_zamzam",
+                  "title": "Doa Minum Air Zamzam",
+                  "arabic_text": "اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا، وَرِزْقًا وَاسِعًا، وَشِفَاءً مِنْ كُلِّ دَاءٍ",
+                  "latin_transliteration": "Allahumma inni as-aluka 'ilman naafi'an, wa rizqan waasi'an, wa syifaa-an min kulli daa-in.",
+                  "translation_id": "Ya Allah, sungguh aku memohon kepada-Mu ilmu yang bermanfaat, rezeki yang luas, dan kesembuhan dari segala macam penyakit.",
+                  "source_ref": "HR. Ad-Daruquthni no. 238 dari Ibnu Abbas (Rujukan: Rumaysho.com & Muslim.or.id)"
                 }
               ]
             }
@@ -136,12 +165,20 @@
               "instruction": "Mulai dari Bukit Safa menghadap kiblat, bertakbir 3 kali, membaca zikir, dan berjalan 7 lintasan hingga berakhir di Marwah.",
               "readings": [
                 {
+                  "reading_id": "read_shofa_marwah",
+                  "title": "Zikir & Doa di Bukit Shafa dan Marwah",
+                  "arabic_text": "لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ. لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ، أَنْجَزَ وَعْدَهُ وَنَصَرَ عَبْدَهُ، وَهَزَمَ الْأَحْزَابَ وَحْدَهُ",
+                  "latin_transliteration": "Laa ilaaha illallahu wahdahu laa syariika lah, lahul mulku wa lahul hamdu wa huwa 'ala kulli syai-in qadiir. Laa ilaaha illallahu wahdah, anjaza wa'dah, wa nashara 'abdah, wa hazamal ahzaaba wahdah.",
+                  "translation_id": "Tiada sesembahan yang berhak disembah selain Allah semata, tiada sekutu bagi-Nya. Milik-Nya kerajaan dan segala pujian, dan Dia Mahakuasa atas segala sesuatu. Tiada sesembahan selain Allah semata, Dia menepati janji-Nya, menolong hamba-Nya, dan mengalahkan musuh-musuh sendirian.",
+                  "source_ref": "HR. Muslim no. 1218 (Rujukan: Almanhaj.or.id & Muslim.or.id)"
+                },
+                {
                   "reading_id": "read_lampu_hijau_sai",
                   "title": "Doa Saat Melewati Dua Lampu Hijau",
                   "arabic_text": "رَبِّ اغْفِرْ وَارْحَمْ إِنَّكَ أَنْتَ الأَعَزُّ الأَكْرَمُ",
                   "latin_transliteration": "Rabbighfir warham innaka antal a'azzul akram.",
                   "translation_id": "Wahai Rabbku, ampunilah dan rahmatilah, sesungguhnya Engkau Mahamulia dan Mahaagung.",
-                  "source_ref": "Riwayat Ibnu Umar & Ibnu Abbas, sanad shahih menurut Syaikh Al-Albani."
+                  "source_ref": "Riwayat Ibnu Umar & Ibnu Abbas, Shahih (Rujukan: Almanhaj.or.id & Yufid.com)"
                 }
               ]
             },
@@ -152,7 +189,8 @@
               "differences_note": {
                 "has_ikhtilaf": true,
                 "summary": "Ringkasan 7 menyatakan tahalul hukumnya wajib, sedangkan Ringkasan 3 menyatakan rukun. Seluruhnya sepakat tahalul mutlak dikerjakan untuk mengakhiri ihram umrah."
-              }
+              },
+              "readings": []
             }
           ]
         }
@@ -183,7 +221,8 @@
                   "title": "Lafaz Niat Haji",
                   "arabic_text": "لَبَّيْكَ حَجًّا",
                   "latin_transliteration": "Labbaika hajjan.",
-                  "translation_id": "Aku penuhi panggilan-Mu untuk berhaji."
+                  "translation_id": "Aku penuhi panggilan-Mu untuk berhaji.",
+                  "source_ref": "HR. Muslim no. 1218 (Rujukan: Rumaysho.com & Muslim.or.id)"
                 }
               ]
             },
@@ -194,7 +233,8 @@
               "differences_note": {
                 "has_ikhtilaf": true,
                 "summary": "Ringkasan 2, 5, 8 menyebut salat di Mina diqasar tanpa jamak (sunah utama). Ringkasan 6 menyebut Dzuhur-Ashar dapat dijamak jika kondisi rombongan menuntutnya."
-              }
+              },
+              "readings": []
             }
           ]
         }
@@ -219,7 +259,10 @@
               "step_id": "step_arafah_01",
               "order": 1,
               "instruction": "Memastikan diri berada di dalam batas resmi Arafah, mendengarkan khutbah di tenda/masjid, lalu salat Dzuhur dan Ashar jamak taqdim qasar.",
-              "prohibitions": ["keluar_batas_arafah_sebelum_maghrib"]
+              "prohibitions": [
+                "keluar_batas_arafah_sebelum_maghrib"
+              ],
+              "readings": []
             },
             {
               "step_id": "step_arafah_02",
@@ -232,7 +275,7 @@
                   "arabic_text": "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
                   "latin_transliteration": "Laa ilaaha illallaahu wahdahu laa syariika lah, lahul mulku wa lahul hamdu wa huwa 'alaa kulli syai-in qadiir.",
                   "translation_id": "Tidak ada sesembahan yang berhak disembah selain Allah semata, tidak ada sekutu bagi-Nya. Milik-Nya segala kerajaan dan pujian, dan Dia Mahakuasa atas segala sesuatu.",
-                  "source_ref": "HR. Tirmidzi no. 3585."
+                  "source_ref": "HR. Tirmidzi no. 3585, Hasan (Rujukan: Muslim.or.id & Almanhaj.or.id)"
                 }
               ]
             }
@@ -258,7 +301,10 @@
               "step_id": "step_muzdalifah_01",
               "order": 1,
               "instruction": "Tiba di Muzdalifah, salat Maghrib (3 rakaat) dan Isya (2 rakaat) secara jamak takhir dengan 1 adzan 2 iqamah sebelum makan atau menggelar kasur.",
-              "prohibitions": ["salat_maghrib_di_arafah"]
+              "prohibitions": [
+                "salat_maghrib_di_arafah"
+              ],
+              "readings": []
             },
             {
               "step_id": "step_muzdalifah_02",
@@ -270,7 +316,8 @@
                   "title": "Zikir di Masy'aril Haram Setelah Subuh",
                   "arabic_text": "فَإِذَا أَفَضْتُمْ مِنْ عَرَفَاتٍ فَاذْكُرُوا اللَّهَ عِنْدَ الْمَشْعَرِ الْحَرَامِ",
                   "latin_transliteration": "Fa-idzaa afadhtum min 'Arafaatin fadzkurullaaha 'indal Masy'aril Haraam.",
-                  "translation_id": "Maka apabila kamu telah bertolak dari Arafah, berdzikirlah kepada Allah di Masy'aril Haram (QS. Al-Baqarah: 198)."
+                  "translation_id": "Maka apabila kamu telah bertolak dari Arafah, berdzikirlah kepada Allah di Masy'aril Haram (QS. Al-Baqarah: 198).",
+                  "source_ref": "QS. Al-Baqarah: 198 & HR. Muslim no. 1218 (Rujukan: Almanhaj.or.id & Muslim.or.id)"
                 }
               ]
             }
@@ -296,7 +343,20 @@
               "step_id": "step_aqabah_01",
               "order": 1,
               "instruction": "Melontar Jumrah Aqabah tepat 7 batu kerikil satu per satu sambil bertakbir Allahu Akbar di setiap lemparan. Setelah lemparan pertama, bacaan talbiah dihentikan.",
-              "prohibitions": ["melempar_7_batu_sekaligus", "melempar_jumrah_ula_wusta_hari_nahar"]
+              "prohibitions": [
+                "melempar_7_batu_sekaligus",
+                "melempar_jumrah_ula_wusta_hari_nahar"
+              ],
+              "readings": [
+                {
+                  "reading_id": "read_takbir_jumrah",
+                  "title": "Takbir Saat Melempar Setiap Kerikil Jumrah",
+                  "arabic_text": "بِسْمِ اللَّهِ وَاللَّهُ أَكْبَرُ",
+                  "latin_transliteration": "Bismillaahi wallaahu akbar.",
+                  "translation_id": "Dengan menyebut nama Allah, dan Allah Mahabesar.",
+                  "source_ref": "HR. Bukhari no. 1752 & Muslim no. 1218 (Rujukan: Almanhaj.or.id & Rumaysho.com)"
+                }
+              ]
             },
             {
               "step_id": "step_tahalul_nahar",
@@ -305,7 +365,8 @@
               "differences_note": {
                 "has_ikhtilaf": true,
                 "summary": "Tawaf Ifadah dianjurkan dilakukan pada 10 Zulhijah. Namun pemateri (Ringkasan 6) menyarankan jemaah menunda tawaf ifadah setelah seluruh rangkaian di Mina selesai (13 Zulhijah) demi menjaga kebugaran fisik lansia."
-              }
+              },
+              "readings": []
             }
           ]
         }
@@ -330,7 +391,20 @@
               "step_id": "step_tasyrik_01",
               "order": 1,
               "instruction": "Urutan melontar wajib tertib: Jumrah Ula (7 batu), berdoa menghadap kiblat; Jumrah Wusta (7 batu), berdoa menghadap kiblat; lalu Jumrah Aqabah (7 batu) tanpa berdoa setelahnya.",
-              "prohibitions": ["melontar_sebelum_zawal", "membalik_urutan_jumrah"]
+              "prohibitions": [
+                "melontar_sebelum_zawal",
+                "membalik_urutan_jumrah"
+              ],
+              "readings": [
+                {
+                  "reading_id": "read_takbir_jumrah",
+                  "title": "Takbir Saat Melempar Setiap Kerikil Jumrah",
+                  "arabic_text": "بِسْمِ اللَّهِ وَاللَّهُ أَكْبَرُ",
+                  "latin_transliteration": "Bismillaahi wallaahu akbar.",
+                  "translation_id": "Dengan menyebut nama Allah, dan Allah Mahabesar.",
+                  "source_ref": "HR. Bukhari no. 1752 & Muslim no. 1218 (Rujukan: Almanhaj.or.id & Rumaysho.com)"
+                }
+              ]
             },
             {
               "step_id": "step_tasyrik_nafar",
@@ -339,7 +413,8 @@
               "differences_note": {
                 "has_ikhtilaf": false,
                 "summary": "Nafar awal dan tsani keduanya sah dan dicontohkan dalam syariat. Jemaah mengikuti arahan maktab rombongan."
-              }
+              },
+              "readings": []
             }
           ]
         }

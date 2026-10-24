@@ -33,4 +33,12 @@ class AssetHajjGuideRepository(
     override suspend fun getDayByHijri(hijriDay: Int, hijriMonth: Int): HajjDay? {
         return getAllDays().find { it.hijriDay == hijriDay && it.hijriMonth == hijriMonth }
     }
+
+    override suspend fun getReadingById(readingId: String): com.haji2027.core.model.DoaReading? {
+        return getAllDays()
+            .flatMap { it.activities }
+            .flatMap { it.steps }
+            .flatMap { it.readings }
+            .find { it.readingId == readingId }
+    }
 }
