@@ -27,11 +27,32 @@
 | **TASK-02**  | Model Domain Manasik & Parser JSON | ✅ **SELESAI** | 24-10-2026 | Model domain `:core:model` & parser tangguh `:core:common`. |
 | **TASK-03**  | Mesin Kalender Hijrah & Date Override | ✅ **SELESAI** | 24-10-2026 | `HijriCalendarEngine` Umm al-Qura + manual offset (-3..+3). |
 | **TASK-04**  | Room DB: Checklist & FTS4 Search Table | ✅ **SELESAI** | 24-10-2026 | Room SQLite `AppDatabase`, tabel `checklist_progress`, tabel virtual FTS4 `guide_search_fts`, query sanitizer & indexer, repository layer. |
-| **TASK-05**  | Feature Guide: Beranda "Hari Ini" & UI  | 🟡 **NEXT** | - | Modul `:feature:guide` (HomeScreen & ViewModels). |
+| **TASK-05**  | Feature Guide: Beranda "Hari Ini" & UI  | ✅ **SELESAI** | 24-10-2026 | `HomeScreen`, `HomeViewModel`, 3 tombol aksi raksasa ramah lansia ($\ge 56\text{ dp}$), bilah progres checklist hari ini, integrasi kalender Umm al-Qura. |
+| **TASK-06**  | Feature Guide: Bacaan Doa & Detail Step | 🟡 **NEXT** | - | Modul `:feature:guide` (DetailScreen & DoaScreen). |
 
 ---
 
 ## 2. LOG EKSEKUSI TUGAS SELESAI
+
+### TASK-05: Feature Guide: Beranda "Hari Ini" & UI (Selesai pada Commit: b335b7a)
+- **Modul Fitur Panduan `:feature:guide`:**
+  - `HajjGuideRepository.kt` & `AssetHajjGuideRepository.kt`: Abstraksi repositori konten manasik berbasis berkas JSON lokal (`content_v1.0.0.json`) yang independen dari Android Framework dan siap diuji pada JVM.
+  - `HomeUiState.kt`: Model state Compose reaktif mencakup tanggal Hijriah & Masehi, hari manasik aktif, status puncak haji, persentase progres, dan status kesiapan offline.
+  - `HomeViewModel.kt`:
+    - Mengintegrasikan `HijriCalendarEngine` (zona waktu `Asia/Riyadh` + penyesuaian manual offset -3..+3 hari) dengan dataset manasik.
+    - Mencocokkan hari aktif otomatis (misal: 9 Zulhijah langsung memuat "Hari Arafah — Wukuf Puncak Haji").
+    - Menghitung progres langkah manasik hari ini secara reaktif dari `ChecklistRepository` Room Database.
+    - Mekanisme fallback anggun (*graceful fallback*) ke hari persiapan pertama jika tanggal perangkat berada di luar musim haji.
+  - **Komponen Antarmuka Pengguna (Accessible & WCAG AAA Lansia):**
+    - `HomeScreen.kt`: Layout utama berbasis `Scaffold` dengan TopAppBar ber-badge status `Offline: Siap`, ikon pengaturan aksesibel, dan banner bantuan darurat rombongan.
+    - `HomeDateHeader.kt`: Menampilkan tanggal Hijriah & Masehi dengan kontras tinggi serta badge status offset manual.
+    - `HomeDaySummaryCard.kt`: Kartu informasi hari ini ber-border tegas, indikator lokasi, dan `LinearProgressIndicator` (tinggi 14dp, sudut membulat) yang menampilkan persentase penyelesaian langkah.
+    - `BigActionButton.kt`: Tiga tombol aksi raksasa (tinggi $\ge 84\text{ dp}$, jauh melampaui standar $56\text{ dp}$ lansia) untuk `PANDUAN HARI INI`, `TEMPAT SAYA`, dan `LACAK KELUARGA`.
+  - **Pengujian Unit (`HomeViewModelTest.kt`):**
+    - Verifikasi pemuatan otomatis hari aktif 9 Zulhijah (Arafah) dengan penandaan puncak haji.
+    - Verifikasi pergeseran tanggal instan saat manual offset +1 hari diterapkan.
+    - Verifikasi akurasi persentase progres langkah manasik (0% s.d. 100%).
+    - Verifikasi penanganan tanggal di luar musim haji.
 
 ### TASK-04: Room DB: Checklist & FTS4 Search Table (Selesai pada Commit: c5ecb51)
 - **Modul Basis Data `:core:database`:**
