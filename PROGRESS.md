@@ -25,12 +25,23 @@
 | **Fase 0**   | Baseline Konten Manasik (`content_v1.0.0.json`)| ✅ **SELESAI** | 24-10-2026 | Berkas JSON valid 8 hari manasik, doa Arab, & 10 ikhtilaf. |
 | **TASK-01**  | Setup Multi-Module & Design System | ✅ **SELESAI** | 24-10-2026 | Scaffolding 9 modul Gradle, Version Catalog, Design Tokens. |
 | **TASK-02**  | Model Domain Manasik & Parser JSON | ✅ **SELESAI** | 24-10-2026 | Model domain `:core:model` & parser tangguh `:core:common`. |
-| **TASK-03**  | Mesin Kalender Hijrah & Date Override | 🟡 **NEXT** | - | Modul `:core:common` (`HijriCalendarEngine`). |
-| **TASK-04**  | Room DB: Checklist & FTS4 Search Table | ⚪ *QUEUED* | - | Modul `:core:database` (Room SQLite). |
+| **TASK-03**  | Mesin Kalender Hijrah & Date Override | ✅ **SELESAI** | 24-10-2026 | `HijriCalendarEngine` Umm al-Qura + manual offset (-3..+3). |
+| **TASK-04**  | Room DB: Checklist & FTS4 Search Table | 🟡 **NEXT** | - | Modul `:core:database` (Room SQLite). |
 
 ---
 
 ## 2. LOG EKSEKUSI TUGAS SELESAI
+
+### TASK-03: Mesin Kalender Hijrah & Date Override (Selesai pada Commit: d1f048d)
+- **Model Domain `:core:model`:**
+  - `HijriDateModel.kt`: Representasi terstruktur tanggal Hijriah Umm al-Qura (`dayOfMonth`, `monthNumber`, `monthName`, `year`, `isHajjSeason`, `appliedOffsetDays`, `formattedDate`).
+- **Mesin Kalender `:core:common`:**
+  - `HijriCalendarEngine.kt`:
+    - Menggunakan kalender Umm al-Qura bawaan Java/Android (`java.time.chrono.HijrahChronology.INSTANCE`).
+    - Mendukung zona waktu Arab Saudi (`Asia/Riyadh` / UTC+3).
+    - Mendukung manual date offset (-3 s.d. +3 hari) untuk mengantisipasi perbedaan rukyatul hilal resmi Kerajaan Arab Saudi.
+    - Fungsi pembantu deteksi hari puncak manasik haji (`isPeakHajjDays`, 8..13 Zulhijah).
+  - `HijriCalendarEngineTest.kt`: Unit test menyeluruh untuk konversi tanggal Masehi ke Hijriah, pengujian offset positif/negatif, pembatasan rentang offset (*clamping* safety), format tanggal Bahasa Indonesia, dan deteksi hari Tarwiyah/Arafah/Nahar/Tasyrik.
 
 ### TASK-02: Model Domain Manasik & Parser JSON (Selesai pada Commit: 47993f9)
 - **Modul Domain `:core:model`:**
