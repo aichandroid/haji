@@ -26,11 +26,38 @@
 | **TASK-01**  | Setup Multi-Module & Design System | ✅ **SELESAI** | 24-10-2026 | Scaffolding 9 modul Gradle, Version Catalog, Design Tokens. |
 | **TASK-02**  | Model Domain Manasik & Parser JSON | ✅ **SELESAI** | 24-10-2026 | Model domain `:core:model` & parser tangguh `:core:common`. |
 | **TASK-03**  | Mesin Kalender Hijrah & Date Override | ✅ **SELESAI** | 24-10-2026 | `HijriCalendarEngine` Umm al-Qura + manual offset (-3..+3). |
-| **TASK-04**  | Room DB: Checklist & FTS4 Search Table | 🟡 **NEXT** | - | Modul `:core:database` (Room SQLite). |
+| **TASK-04**  | Room DB: Checklist & FTS4 Search Table | ✅ **SELESAI** | 24-10-2026 | Room SQLite `AppDatabase`, tabel `checklist_progress`, tabel virtual FTS4 `guide_search_fts`, query sanitizer & indexer, repository layer. |
+| **TASK-05**  | Feature Guide: Beranda "Hari Ini" & UI  | 🟡 **NEXT** | - | Modul `:feature:guide` (HomeScreen & ViewModels). |
 
 ---
 
 ## 2. LOG EKSEKUSI TUGAS SELESAI
+
+### TASK-04: Room DB: Checklist & FTS4 Search Table (Selesai pada Commit: c5ecb51)
+- **Modul Basis Data `:core:database`:**
+  - `AppDatabase.kt`: Abstract Room Database (versi 1, exportSchema = false) mendefinisikan entitas checklist & virtual search FTS4.
+  - `ChecklistEntity.kt` & `ChecklistDao.kt`:
+    - Tabel `checklist_progress` (`step_id` PK, `is_completed`, `completed_at_epoch_ms`).
+    - Query Flow reaktif Compose: `getAllChecklistFlow()`, `getCompletedStepIdsFlow()`, lookup per langkah, dan `upsertChecklist` dengan `OnConflictStrategy.REPLACE`.
+  - `GuideSearchEntity.kt` & `GuideSearchDao.kt`:
+    - Tabel virtual SQLite FTS4 `guide_search_fts` (`content_id`, `title`, `body_text`, `arabic_text`) dengan tokenizer `unicode61`.
+    - Query MATCH FTS4 berlatensi rendah (< 80ms) untuk pencarian offline instan.
+  - `FtsQueryUtils.kt`:
+    - Sanitasi input query dari karakter injeksi/kontrol SQLite FTS (`*`, `"`, `'`, `()`, `[]`, `~`, `^`, dll).
+    - Menghasilkan token ber-wildcard prefix otomatis (misal: "arafah wukuf" -> "arafah* wukuf*") yang aman dan akurat.
+  - `HajjSearchIndexer.kt`:
+    - Pengindeks otomatis dari model domain `HajjContentPackage` ke baris entitas FTS4 SQLite.
+    - Mengindeks seluruh 8 hari, aktivitas, langkah manasik, catatan ikhtilaf fikih, serta doa bahasa Arab dan Latin.
+  - `ChecklistRepository.kt` & `DefaultChecklistRepository.kt`:
+    - Abstraksi Clean Architecture yang mengisolasi UI dari implementasi internal Room DAO.
+  - `GuideSearchRepository.kt` & `DefaultGuideSearchRepository.kt`:
+    - Abstraksi pencarian dan populasi indeks yang memproses query tersanitasi secara aman.
+  - **Pengujian Unit & Validasi SQLite:**
+    - `FtsQueryUtilsTest.kt`: Pengujian sanitasi string kosong, karakter ilegal, multi-token, dan teks Arab.
+    - `HajjSearchIndexerTest.kt`: Pengujian pemetaan berkas konten riil `content_v1.0.0.json` ke entitas FTS4.
+    - `ChecklistRepositoryTest.kt`: Pengujian operasi centang, pembatalan centang, pencatatan timestamp epoch, dan reset data jemaah.
+    - `GuideSearchRepositoryTest.kt`: Pengujian delegasi query tersanitasi ke DAO FTS4.
+    - Skrip pengujian mandiri Python/SQLite3: Memverifikasi DDL SQLite, indeks FTS4 tokenizer unicode61, dan pencarian multi-kata (Arab & Latin) pada seluruh korpus 42 entri manasik haji.
 
 ### TASK-03: Mesin Kalender Hijrah & Date Override (Selesai pada Commit: d1f048d)
 - **Model Domain `:core:model`:**
