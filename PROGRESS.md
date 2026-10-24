@@ -24,13 +24,23 @@
 | **Tahap XII**| CI/CD, Sideloading, Runbook, & Biaya | ✅ **SELESAI** | 24-10-2026 | Skenario biaya < $30, RTM lengkap, Glosarium manasik/teknis. |
 | **Fase 0**   | Baseline Konten Manasik (`content_v1.0.0.json`)| ✅ **SELESAI** | 24-10-2026 | Berkas JSON valid 8 hari manasik, doa Arab, & 10 ikhtilaf. |
 | **TASK-01**  | Setup Multi-Module & Design System | ✅ **SELESAI** | 24-10-2026 | Scaffolding 9 modul Gradle, Version Catalog, Design Tokens. |
-| **TASK-02**  | Model Domain Manasik & Parser JSON | 🟡 **NEXT** | - | Modul `:core:model` & parser data. |
-| **TASK-03**  | Mesin Kalender Hijrah & Date Override | ⚪ *QUEUED* | - | Modul `:core:common` (`HijriCalendarEngine`). |
+| **TASK-02**  | Model Domain Manasik & Parser JSON | ✅ **SELESAI** | 24-10-2026 | Model domain `:core:model` & parser tangguh `:core:common`. |
+| **TASK-03**  | Mesin Kalender Hijrah & Date Override | 🟡 **NEXT** | - | Modul `:core:common` (`HijriCalendarEngine`). |
 | **TASK-04**  | Room DB: Checklist & FTS4 Search Table | ⚪ *QUEUED* | - | Modul `:core:database` (Room SQLite). |
 
 ---
 
 ## 2. LOG EKSEKUSI TUGAS SELESAI
+
+### TASK-02: Model Domain Manasik & Parser JSON (Selesai pada Commit: 47993f9)
+- **Modul Domain `:core:model`:**
+  - `HajjContent.kt`: Domain data classes `@Serializable` untuk `HajjContentPackage`, `HajjDay`, `ManasikActivity`, `RulingCategory` (RUKUN, WAJIB, SUNAH), `ManasikStep`, `DoaReading`, dan `DifferencesNote` (penanganan ikhtilaf fikih).
+  - `SavedPlace.kt`: Model data `SavedPlace` dan `PlaceCategory` (DOOR, HOTEL, CAMP, BUS, OTHER).
+  - `TrackingModels.kt`: Model data `PairingToken` (TTL 5 menit), `TrackingRelation`, `UserLocation`, dan `RelativeTarget`.
+  - `ChecklistProgress.kt`: Model data progres centang langkah manasik.
+- **Modul Parser `:core:common`:**
+  - `HajjContentParser.kt`: Parser JSON menggunakan `kotlinx.serialization` dengan konfigurasi `ignoreUnknownKeys = true` (forward-compatible), aman terhadap input malformed.
+  - `HajjContentParserTest.kt`: Unit test komprehensif menguji deserialisasi berkas `content_v1.0.0.json` riil, validasi data Hari Arafah, teks doa Arab tahlil, penanganan error JSON korup, dan kompatibilitas atribut masa depan.
 
 ### TASK-01 & Fase 0 (Selesai pada Commit: e775d3a)
 - **Slice 1.1 (Multi-Module Gradle Scaffolding):**
