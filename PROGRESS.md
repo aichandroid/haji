@@ -28,11 +28,42 @@
 | **TASK-03**  | Mesin Kalender Hijrah & Date Override | ✅ **SELESAI** | 24-10-2026 | `HijriCalendarEngine` Umm al-Qura + manual offset (-3..+3). |
 | **TASK-04**  | Room DB: Checklist & FTS4 Search Table | ✅ **SELESAI** | 24-10-2026 | Room SQLite `AppDatabase`, tabel `checklist_progress`, tabel virtual FTS4 `guide_search_fts`, query sanitizer & indexer, repository layer. |
 | **TASK-05**  | Feature Guide: Beranda "Hari Ini" & UI  | ✅ **SELESAI** | 24-10-2026 | `HomeScreen`, `HomeViewModel`, 3 tombol aksi raksasa ramah lansia ($\ge 56\text{ dp}$), bilah progres checklist hari ini, integrasi kalender Umm al-Qura. |
-| **TASK-06**  | Feature Guide: Bacaan Doa & Detail Step | 🟡 **NEXT** | - | Modul `:feature:guide` (DetailScreen & DoaScreen). |
+| **TASK-06**  | Feature Guide: Bacaan Doa & Detail Step | ✅ **SELESAI** | 24-10-2026 | `GuideDetailScreen` (SCR-02), `DoaScreen` (SCR-03), integrasi dalil doa dari muslim.or.id, rumaysho.com, almanhaj.or.id, & yufid.com, tombol ukuran teks lansia. |
+| **TASK-07**  | Room DB: Saved Places & DAOs            | 🟡 **NEXT** | - | Modul `:core:database` (PlacesDao & SavedPlaces). |
 
 ---
 
 ## 2. LOG EKSEKUSI TUGAS SELESAI
+
+### TASK-06: Feature Guide: Bacaan Doa & Detail Step (Selesai pada Commit: c219477)
+- **Sumber Data Doa & Validasi Referensi Shahih:**
+  - Melakukan riset komprehensif ke 4 rujukan terpercaya sesuai arahan pengguna: `muslim.or.id`, `rumaysho.com`, `almanhaj.or.id`, dan `yufid.com`.
+  - Memperkaya berkas `content_v1.0.0.json` dengan doa-doa manasik berdalil:
+    1. *Lafaz Niat Umrah & Haji*: HR. Bukhari & Muslim (Muslim.or.id & Rumaysho.com).
+    2. *Doa Isytirat (Syarat Ihram bagi jemaah sakit/lansia)*: HR. Bukhari no. 5089 & Muslim no. 1207 (Rumaysho.com & Yufid.com).
+    3. *Talbiah Utama*: HR. Bukhari no. 1549 & Muslim no. 19 (Muslim.or.id, Rumaysho.com & Almanhaj.or.id).
+    4. *Doa Sapu Jagad Antara Rukun Yamani & Hajar Aswad*: HR. Abu Dawud no. 1892 (Muslim.or.id & Rumaysho.com).
+    5. *Doa Minum Air Zamzam*: HR. Ad-Daruquthni no. 238 dari Ibnu Abbas (Rumaysho.com & Muslim.or.id).
+    6. *Zikir & Doa di Atas Bukit Shafa dan Marwah*: HR. Muslim no. 1218 (Almanhaj.or.id & Muslim.or.id).
+    7. *Doa Melewati Dua Pilar Hijau Sa'i*: Atsar Ibnu Umar & Ibnu Abbas, Shahih (Almanhaj.or.id & Yufid.com).
+    8. *Zikir Utama Hari Arafah*: HR. Tirmidzi no. 3585, Hasan (Muslim.or.id & Almanhaj.or.id).
+    9. *Zikir di Masy'aril Haram Setelah Subuh*: QS. Al-Baqarah: 198 & HR. Muslim no. 1218 (Almanhaj.or.id & Muslim.or.id).
+    10. *Takbir Saat Melempar Setiap Kerikil Jumrah*: HR. Bukhari no. 1752 & Muslim no. 1218 (Almanhaj.or.id & Rumaysho.com).
+- **Layar Detail Kegiatan Manasik (`GuideDetailScreen.kt` / SCR-02):**
+  - `GuideDetailViewModel.kt` & `GuideDetailUiState.kt`: Memuat detail langkah, rincian aktivitas, larangan ihram, dan status progres centang.
+  - `ActivityCard.kt`: Menampilkan judul aktivitas, badge status hukum (Rukun/Wajib/Sunah), catatan waktu dan tempat.
+  - `StepItem.kt`: Komponen satu langkah berukuran teks 18sp, kotak larangan bernuansa peringatan lembut, kotak catatan ikhtilaf, tombol akses doa `[BACA DOA >>]`, dan tombol centang selesai (target sentuh $\ge 56\text{ dp}$).
+  - `IkhtilafWarningBox.kt`: Menyajikan 10 titik perbedaan pendapat fikih secara netral dan menenangkan jemaah dengan menonjolkan konsensus (*ijma'*) para ulama.
+- **Layar Bacaan Doa Multilingual (`DoaScreen.kt` / SCR-03):**
+  - `DoaReadingViewModel.kt` & `DoaReadingUiState.kt`: Memuat konten doa berdasarkan `readingId` dan menyediakan fungsi pengalih skala ukuran teks (`TextSizeScale`: Normal vs Besar Lansia).
+  - Teks Arab berukuran besar (28sp s.d. 36sp) dengan penegakan arah teks RTL (*Right-to-Left*).
+  - Transliterasi Latin (18sp s.d. 24sp) dan terjemahan Bahasa Indonesia (17sp s.d. 22sp).
+  - Kartu sumber rujukan dalil eksplisit mencantumkan perawi dan rujukan situs terpercaya.
+- **Pengujian Unit (`GuideDetailViewModelTest.kt` & `DoaReadingViewModelTest.kt`):**
+  - Menguji pemuatan data aktivitas dan langkah Hari Arafah (`day_09_zulhijah`).
+  - Menguji toggle centang checklist secara reaktif dengan perubahan status instan.
+  - Menguji pemuatan doa, teks Arab, Latin, terjemahan, dan rujukan sumber `Muslim.or.id`/`Almanhaj.or.id`.
+  - Menguji mekanisme perbesaran huruf dinamis (*dynamic text scaling*) untuk lansia.
 
 ### TASK-05: Feature Guide: Beranda "Hari Ini" & UI (Selesai pada Commit: b335b7a)
 - **Modul Fitur Panduan `:feature:guide`:**
