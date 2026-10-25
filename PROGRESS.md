@@ -37,7 +37,34 @@
 | **TASK-12**  | Cloud Functions: Pairing Token Exchange | ✅ **SELESAI** | 25-10-2026 | `/backend/functions` (`index.ts`, `tokenService.ts`, rate limit 3/15m, transaksi atomik anti-replay, purge data, unit tests). |
 | **TASK-13**  | Firestore Security Rules Penegakan RBAC | ✅ **SELESAI** | 25-10-2026 | `/backend/firestore.rules` (RBAC, consent verification `hasActiveTrackingConsent`, anti-IDOR, emulator config, unit tests). |
 | **TASK-14**  | Android Location Foreground Service     | ✅ **SELESAI** | 25-10-2026 | Modul `:feature:tracking` (`LocationTrackingService.kt`, adaptif 30s/300s, ongoing notification, Android 14+ location type, unit tests). |
-| **TASK-15**  | Offline Location Queue & Sync Manager   | 🟡 **NEXT** | - | Modul `:core:database`, `:feature:tracking` (`location_sync_queue`, FIFO 50, `SyncManager`). |
+| **TASK-15**  | Offline Location Queue & Sync Manager   | ✅ **SELESAI** | 25-10-2026 | Modul `:core:database` & `:feature:tracking` (`location_sync_queue`, FIFO 50, `LocationQueueRepository`, `SyncManager` Data Minimization, unit tests). |
+| **TASK-16**  | Feature Tracking: QR Share & Scan UI    | 🟡 **NEXT** | - | Modul `:feature:tracking` (`QrScreen.kt`, ML Kit Scanner, consent manager). |
+
+---
+
+## 2. LOG EKSEKUSI TUGAS SELESAI
+
+### TASK-15: Offline Location Queue & Sync Manager (Selesai pada Commit: f7dcdb2)
+- **Tabel Antrean Offline SQLite (`location_sync_queue` di `:core:database`):**
+  - Entitas Room `LocationSyncQueueEntity` dengan indeks `idx_queue_timestamp`.
+  - DAO `LocationSyncQueueDao`:
+    - Operasi penyisipan koordinat offline.
+    - Penegakan kapasitas maksimal 50 sampel secara FIFO (`trimQueueToSize(50)`): mempertahankan 50 sampel paling mutakhir dan memangkas sampel tertua secara otomatis.
+    - Pengambilan sampel paling mutakhir (`getLatestItem()`).
+    - Pembersihan tuntas antrean setelah transmisi berhasil (`clearQueue()`).
+  - Terdaftar resmi pada basis data `AppDatabase`.
+  - Abstraksi Clean Architecture `LocationQueueRepository` dan implementasi `DefaultLocationQueueRepository`.
+- **Manajer Sinkronisasi Store-and-Forward (`SyncManager.kt` di `:feature:tracking`):**
+  - Menerapkan kepatuhan *Data Minimization* Bagian 17.6:
+    - Saat internet pulih, sistem tidak mengirimkan seluruh 50 riwayat pergerakan (menghemat baterai, bandwidth roaming, dan privasi jemaah).
+    - Sistem hanya mengambil 1 sampel koordinat paling mutakhir (`getLatestPendingLocation()`), mengirimkannya via `TrackingApiClient.syncLocations()`, lalu membersihkan seluruh sisa antrean lama yang telah basi di SQLite.
+  - Memantau perubahan status konektivitas jaringan secara reaktif (`NetworkConnectivityProvider.observeConnectivity()`) untuk memicu sinkronisasi otomatis saat online.
+  - State machine reaktif `SyncState` (`Idle`, `Syncing`, `Success(count)`, `Offline(count)`, `Error(msg)`).
+  - Integrasi dua arah dengan `LocationTrackingService.locationListener`.
+- **Pengujian Unit & Validasi:**
+  - `LocationQueueRepositoryTest.kt`: Pengujian penyisipan item, penegakan kapasitas batas 50 FIFO saat 60 sampel masuk (10 sampel tertua terhapus), penghapusan batch id, dan pembersihan total antrean.
+  - `SyncManagerTest.kt`: Pengujian penyimpanan ke SQLite saat offline, pemicu sinkronisasi instan saat online, transmisi hanya 1 sampel mutakhir (Data Minimization), auto-sync saat sinyal pulih, dan penautan listener service.
+  - Validasi sintaksis struktur kurung pada seluruh 37 file Kotlin di `:core:database` dan `:feature:tracking`.
 
 ---
 
