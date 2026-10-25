@@ -41,10 +41,31 @@
 | **TASK-16**  | Feature Tracking: QR Share & Scan UI    | ✅ **SELESAI** | 25-10-2026 | Modul `:feature:tracking` (`TrackingMainScreen.kt`, `QrShareScreen.kt` SCR-05, `QrScanScreen.kt`, `ConsentManagerScreen.kt` SCR-06, `TrackingViewModel.kt`, unit tests). |
 | **TASK-17**  | OTA Content Update Manager & Hash Check | ✅ **SELESAI** | 25-10-2026 | Modul `:feature:settings` (`OtaEngine.kt`, `DualLayerContentManager.kt`, verifikasi integritas SHA-256, `SettingsScreen.kt`, unit tests). |
 | **TASK-18**  | E2E Purge Data: Right to be Forgotten   | ✅ **SELESAI** | 25-10-2026 | Modul `:feature:settings` & `:backend` (`DataPurgeManager.kt`, dialog 2-langkah, pembersihan Room, reset Auth, unit tests). |
+| **APP-SHELL**| Integrasi App Shell & Root Navigation   | ✅ **SELESAI** | 25-10-2026 | Modul `:app` (`AppContainer.kt`, `HajjApplication.kt`, `MainActivity.kt`, `RootScreen.kt`, navigasi lansia 56dp, unit tests). |
 
 ---
 
 ## 2. LOG EKSEKUSI TUGAS SELESAI
+
+### APP-SHELL: Integrasi App Shell & Root Navigation (Selesai pada Commit: 94ea0aa)
+- **Dependency Container Terpadu (`AppContainer.kt` & `HajjApplication.kt` di `:app`):**
+  - Menginisialisasi seluruh layanan singleton aplikasi secara lazy:
+    - Basis data Room SQLite `AppDatabase` dan seluruh 4 repositori data (`ChecklistRepository`, `PlacesRepository`, `GuideSearchRepository`, `LocationQueueRepository`).
+    - Modul otentikasi & backend `AuthManager` dan `TrackingApiClient`.
+    - Modul layanan pelacakan lokasi latar belakang `TrackingController`, `SyncManager`, dan `AndroidNetworkConnectivityProvider`.
+    - Modul konten panduan dua lapis `DualLayerContentManager`, `OtaEngine`, dan `HajjGuideRepository`.
+    - Modul penghapusan data mandiri `DataPurgeManager`.
+    - Sensor kompas dan lokasi hardware `GpsAveragingEngine` dan `CompassNavigationEngine`.
+- **Bilah Navigasi Bawah Ramah Lansia (`RootScreen.kt` & `RootNavigation.kt`):**
+  - Mengimplementasikan 4 pilar fitur utama:
+    1. **Tab Panduan (`AppTab.GUIDE`):** Menampilkan `HomeScreen` dengan integrasi dinamis rute detail langkah manasik (`GuideDetailScreen`) dan rujukan doa multilingual (`DoaScreen`).
+    2. **Tab Tempat Saya (`AppTab.PLACES`):** Menampilkan `PlacesListScreen` dan transisi mulus ke kompas panah spasial (`CompassScreen` SCR-04).
+    3. **Tab Lacak (`AppTab.TRACKING`):** Menampilkan `TrackingMainScreen` (SCR-05 QR 5 menit & SCR-06 Consent Manager).
+    4. **Tab Pengaturan (`AppTab.SETTINGS`):** Menampilkan `SettingsScreen` (Pembaruan OTA SHA-256 & `PurgeDataSection` Right to be Forgotten).
+  - Standar Aksesibilitas WCAG AAA: Target sentuh tinggi minimal $\ge 56\text{dp}$ (`76dp` total tinggi bar), kontras tinggi `PrimaryDarkNavy` di atas `SurfaceWhite`, dan lencana indikator tab aktif.
+- **Pengujian Unit Komprehensif:**
+  - `AppContainerTest.kt`: Memverifikasi pemenuhan kontrak dependensi inti tanpa dependensi mocking eksternal.
+  - `RootNavigationTest.kt`: Menguji pemetaan 4 tab utama, integritas deskripsi aksesibilitas, dan hierarki rute internal.
 
 ### TASK-18: E2E Purge Data: Right to be Forgotten (Selesai pada Commit: cd2482d)
 - **Manajer Pembersihan Data End-to-End (`DataPurgeManager.kt` di `:feature:settings`):**
