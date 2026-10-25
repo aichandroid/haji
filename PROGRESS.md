@@ -30,11 +30,42 @@
 | **TASK-05**  | Feature Guide: Beranda "Hari Ini" & UI  | ✅ **SELESAI** | 24-10-2026 | `HomeScreen`, `HomeViewModel`, 3 tombol aksi raksasa ramah lansia ($\ge 56\text{ dp}$), bilah progres checklist hari ini, integrasi kalender Umm al-Qura. |
 | **TASK-06**  | Feature Guide: Bacaan Doa & Detail Step | ✅ **SELESAI** | 24-10-2026 | `GuideDetailScreen` (SCR-02), `DoaScreen` (SCR-03), integrasi dalil doa dari muslim.or.id, rumaysho.com, almanhaj.or.id, & yufid.com, tombol ukuran teks lansia. |
 | **TASK-07**  | Room DB: Saved Places & DAOs            | ✅ **SELESAI** | 25-10-2026 | Entitas Room `SavedPlaceEntity`, indeks `idx_saved_places_category`, `PlacesDao`, `PlacesRepository` & `DefaultPlacesRepository`, unit test komprehensif. |
-| **TASK-08**  | GPS Multi-Sampling Averaging Engine     | 🟡 **NEXT** | - | Modul `:feature:places` (`GpsEngine.kt`). |
+| **TASK-08**  | GPS Multi-Sampling Averaging Engine     | ✅ **SELESAI** | 25-10-2026 | Mesin perataan koordinat median GPS, filter galat > 25m, provider `FusedLocationProviderClient` (`callbackFlow` + `awaitClose`), unit test komprehensif. |
+| **TASK-09**  | Fusi Sensor Rotasi Kompas & True Azimuth| 🟡 **NEXT** | - | Modul `:feature:places` (`CompassNav.kt`). |
 
 ---
 
 ## 2. LOG EKSEKUSI TUGAS SELESAI
+
+### TASK-08: GPS Multi-Sampling Averaging Engine (Selesai pada Commit: dd3c788)
+- **Model Data Sampling & Agregasi (`GpsSample.kt`):**
+  - `GpsSample`: Model sampel tunggal GPS (`latitude`, `longitude`, `accuracyMeters`, `timestampEpochMs`).
+  - `AveragedLocation`: Model koordinat stabil hasil agregasi median lintang & bujur, rata-rata akurasi, serta jumlah sampel valid dan total.
+  - `GpsSamplingState`: State reaktif Compose (`Idle`, `Sampling(collected, target, latestAccuracy)`, `Success(location)`, `Error(reason, message)`).
+  - `GpsSamplingError`: Kode error terstruktur (`TIMEOUT_INSUFFICIENT_SAMPLES`, `POOR_ACCURACY_ALL_FILTERED`, `GPS_DISABLED`, `PERMISSION_DENIED`).
+- **Abstraksi Penyedia Sampel Lokasi (`LocationSampleProvider.kt` & `FusedLocationSampleProvider.kt`):**
+  - Mengisolasi pemanggilan platform Google Play Services `FusedLocationProviderClient` agar logika komputasi mudah diuji unit tanpa emulator.
+  - Penegakan anti-kebocoran listener GPS: menggunakan `callbackFlow` dengan `awaitClose { fusedLocationClient.removeLocationUpdates(callback) }` jika coroutine sampling dibatalkan di tengah jalan.
+  - Konfigurasi `Priority.PRIORITY_HIGH_ACCURACY` dengan interval sampling adaptif (default 800ms).
+- **Mesin Komputasi Median & Filter Galat (`GpsAveragingEngine.kt`):**
+  - `calculateAveragedLocation()`:
+    1. Mengeliminasi otomatis sampel outlier dengan akurasi terburuk ($accuracy > 25\text{m}$).
+    2. Menghitung nilai median lintang dan bujur secara deterministik (menangani ukuran sampel ganjil maupun genap).
+    3. Menghitung rata-rata akurasi sebagai radius ketidakpastian titik.
+    4. Mengembalikan null jika sampel valid kurang dari batas minimal (3 sampel).
+  - `startSampling()`:
+    1. Mengalirkan status progres interaktif `Sampling` setiap sampel GPS baru diterima.
+    2. Mengumpulkan target 5 sampel dalam batas timeout 6 detik.
+    3. Menangani penolakan izin `SecurityException` (`PERMISSION_DENIED`), timeout ketiadaan sinyal (`TIMEOUT_INSUFFICIENT_SAMPLES`), dan kondisi multipath ekstrem (`POOR_ACCURACY_ALL_FILTERED`).
+- **Pengujian Unit & Verifikasi Matematis:**
+  - `GpsAveragingEngineTest.kt`:
+    1. Pengujian 5 sampel koordinat acak di sekitar Masjidil Haram (verifikasi akurasi nilai median lat/lng dan rata-rata galat).
+    2. Pengujian sampel berjumlah genap (rata-rata dari dua elemen tengah).
+    3. Pengujian penyaringan noise/outlier dengan galat $> 25\text{m}$ (3 sampel valid dari 5 sampel).
+    4. Pengujian penolakan sampel jika sampel valid kurang dari batas minimum 3.
+    5. Pengujian reactive flow `startSampling` dengan fake provider menghasilkan `GpsSamplingState.Success`.
+    6. Pengujian error handling: timeout, poor accuracy, permission denied, dan GPS disabled.
+  - Skrip verifikasi matematis Python: Memvalidasi algoritma sorting, pemisahan genap/ganjil, dan filter threshold galat secara independen (100% lolos).
 
 ### TASK-07: Room DB: Saved Places & DAOs (Selesai pada Commit: 6e9b205)
 - **Entitas Room Tempat Tersimpan (`SavedPlaceEntity.kt`):**
