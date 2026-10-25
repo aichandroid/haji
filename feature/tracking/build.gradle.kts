@@ -28,6 +28,7 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:database"))
     implementation(project(":core:common"))
+    implementation(project(":core:network"))
 
     implementation(libs.play.services.location)
     implementation(platform(libs.androidx.compose.bom))

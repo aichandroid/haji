@@ -27,6 +27,7 @@ include(":core:designsystem")
 include(":core:common")
 include(":core:database")
 include(":core:model")
+include(":core:network")
 
 // Feature Modules
 include(":feature:guide")
