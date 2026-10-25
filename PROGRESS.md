@@ -42,10 +42,32 @@
 | **TASK-17**  | OTA Content Update Manager & Hash Check | ✅ **SELESAI** | 25-10-2026 | Modul `:feature:settings` (`OtaEngine.kt`, `DualLayerContentManager.kt`, verifikasi integritas SHA-256, `SettingsScreen.kt`, unit tests). |
 | **TASK-18**  | E2E Purge Data: Right to be Forgotten   | ✅ **SELESAI** | 25-10-2026 | Modul `:feature:settings` & `:backend` (`DataPurgeManager.kt`, dialog 2-langkah, pembersihan Room, reset Auth, unit tests). |
 | **APP-SHELL**| Integrasi App Shell & Root Navigation   | ✅ **SELESAI** | 25-10-2026 | Modul `:app` (`AppContainer.kt`, `HajjApplication.kt`, `MainActivity.kt`, `RootScreen.kt`, navigasi lansia 56dp, unit tests). |
+| **RELEASE-CI**| Automasi CI/CD & Pipeline Distribusi   | ✅ **SELESAI** | 25-10-2026 | `.github/workflows` (`ci.yml`, `release.yml`), `proguard-rules.pro`, laman unduh mandiri `distribution/index.html`, manifest OTA, skrip hashing SHA-256. |
 
 ---
 
 ## 2. LOG EKSEKUSI TUGAS SELESAI
+
+### RELEASE-CI: Automasi CI/CD & Pipeline Distribusi (Selesai pada Commit: 195e7b3)
+- **Alur Kerja GitHub Actions CI/CD (`.github/workflows/`):**
+  - `ci.yml`:
+    - *Zero-Secret Audit:* Pemindaian otomatis kerentanan kebocoran credential/secret menggunakan `gitleaks-action`.
+    - *Backend Unit Testing:* Menjalankan Mocha test suite di `/backend/functions` (token exchange, anti-replay, rate limiting, purge).
+    - *Android 100% Unit Tests & Build Check:* Menjalankan test runner Android Gradle dengan OpenJDK 21 LTS dan caching build.
+  - `release.yml`:
+    - Mengotomatisasi perakitan release APK saat push tag `v*` atau pemicu manual.
+    - Menghitung nilai hash SHA-256 secara otomatis (`sha256sum app-release.apk > app-release.apk.sha256`).
+    - Menghasilkan metadata rilis dan `manifest.json` yang kompatibel dengan modul OTA `OtaManifest.kt`.
+    - Mengunggah artefak rilis terenkripsi.
+- **Aturan Minifikasi & Pelindungan Privasi R8 Proguard (`app/proguard-rules.pro`):**
+  - Menerapkan kepatuhan Bagian 36 & 37.1 `SYSTEM_DESIGN_DOCUMENT.md`:
+    - Mengeliminasi seluruh panggilan `android.util.Log` pada build rilis (`-assumenosideeffects`) untuk mencegah kebocoran koordinat GPS, token, atau PII di logcat perangkat.
+    - Mempertahankan deserializer `@Serializable` Kotlin, Room entities & DAOs, Play Services Location, Coroutines, dan Compose runtime.
+- **Arsitektur Distribusi Mandiri / Sideloading (`distribution/`):**
+  - Menerapkan ketetapan Bagian 35:
+    - `index.html`: Laman web statis HTTPS responsive ramah lansia (`https://unduh.panduanhaji2027.org`) dengan tombol unduh langsung, tampilan hash SHA-256, jaminan privasi UU PDP No. 27/2022, dan panduan instalasi bergambar langkah-demi-langkah (*Unknown Sources Guide*).
+    - `manifest.json`: Berkas manifest rilis versi 1.0.0.
+    - `generate_release_artifacts.sh`: Skrip bash otomatis untuk kalkulasi checksum SHA-256, verifikasi ukuran, dan pembaruan manifest.
 
 ### APP-SHELL: Integrasi App Shell & Root Navigation (Selesai pada Commit: 94ea0aa)
 - **Dependency Container Terpadu (`AppContainer.kt` & `HajjApplication.kt` di `:app`):**
