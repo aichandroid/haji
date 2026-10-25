@@ -10,3 +10,10 @@ captures
 .cxx
 *.apk
 *.aab
+
+# Node & Backend
+node_modules/
+backend/functions/lib/
+backend/functions/node_modules/
+npm-debug.log*
+
