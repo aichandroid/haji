@@ -4,9 +4,11 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.haji2027.core.database.dao.ChecklistDao
 import com.haji2027.core.database.dao.GuideSearchDao
+import com.haji2027.core.database.dao.LocationSyncQueueDao
 import com.haji2027.core.database.dao.PlacesDao
 import com.haji2027.core.database.entity.ChecklistEntity
 import com.haji2027.core.database.entity.GuideSearchEntity
+import com.haji2027.core.database.entity.LocationSyncQueueEntity
 import com.haji2027.core.database.entity.SavedPlaceEntity
 
 /**
@@ -17,7 +19,8 @@ import com.haji2027.core.database.entity.SavedPlaceEntity
     entities = [
         ChecklistEntity::class,
         GuideSearchEntity::class,
-        SavedPlaceEntity::class
+        SavedPlaceEntity::class,
+        LocationSyncQueueEntity::class
     ],
     version = 1,
     exportSchema = false
@@ -27,6 +30,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun checklistDao(): ChecklistDao
     abstract fun guideSearchDao(): GuideSearchDao
     abstract fun placesDao(): PlacesDao
+    abstract fun locationSyncQueueDao(): LocationSyncQueueDao
 
     companion object {
         const val DATABASE_NAME = "haji_2027.db"
