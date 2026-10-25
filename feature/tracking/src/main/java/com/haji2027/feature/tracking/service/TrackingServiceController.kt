@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.StateFlow
  */
 interface TrackingController {
     val status: StateFlow<TrackingServiceStatus>
-    fun startTracking(context: Context, userId: String)
-    fun stopTracking(context: Context)
+    fun startTracking(context: Context?, userId: String)
+    fun stopTracking(context: Context?)
 }
 
 /**
@@ -19,11 +19,11 @@ class DefaultTrackingController : TrackingController {
 
     override val status: StateFlow<TrackingServiceStatus> = LocationTrackingService.serviceStatus
 
-    override fun startTracking(context: Context, userId: String) {
-        LocationTrackingService.start(context, userId)
+    override fun startTracking(context: Context?, userId: String) {
+        context?.let { LocationTrackingService.start(it, userId) }
     }
 
-    override fun stopTracking(context: Context) {
-        LocationTrackingService.stop(context)
+    override fun stopTracking(context: Context?) {
+        context?.let { LocationTrackingService.stop(it) }
     }
 }
