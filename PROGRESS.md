@@ -35,7 +35,30 @@
 | **TASK-10**  | Feature Places: UI Kompas Panah Compose | ✅ **SELESAI** | 25-10-2026 | Modul `:feature:places` (`PlacesListScreen`, `CompassScreen` SCR-04, `RotatingCompassArrow`, `AddPlaceDialog`, `CalibrationGuideDialog`, ViewModels, dan unit tests). |
 | **TASK-11**  | Firebase Auth Anonymous & Token DTO     | ✅ **SELESAI** | 25-10-2026 | Modul `:core:network` (`AuthManager`, `DefaultFirebaseAuthManager`, DTOs Token/QR, `TrackingApiClient`, dan unit tests). |
 | **TASK-12**  | Cloud Functions: Pairing Token Exchange | ✅ **SELESAI** | 25-10-2026 | `/backend/functions` (`index.ts`, `tokenService.ts`, rate limit 3/15m, transaksi atomik anti-replay, purge data, unit tests). |
-| **TASK-13**  | Firestore Security Rules Penegakan RBAC | 🟡 **NEXT** | - | `/backend/firestore.rules` (RBAC, consent verification, TTL 24h lokasi). |
+| **TASK-13**  | Firestore Security Rules Penegakan RBAC | ✅ **SELESAI** | 25-10-2026 | `/backend/firestore.rules` (RBAC, consent verification `hasActiveTrackingConsent`, anti-IDOR, emulator config, unit tests). |
+| **TASK-14**  | Android Location Foreground Service     | 🟡 **NEXT** | - | Modul `:feature:tracking` (`TrackingForegroundService.kt`, Android 14+). |
+
+---
+
+## 2. LOG EKSEKUSI TUGAS SELESAI
+
+### TASK-13: Firestore Security Rules Penegakan RBAC (Selesai pada Commit: cde0a6a)
+- **Aturan Keamanan Tingkat Kernel Database (`backend/firestore.rules`):**
+  - Menggunakan Firestore Security Rules Version 2 (`rules_version = '2'`).
+  - Fungsi pembantu otentikasi & otorisasi:
+    - `isAuthenticated()`: Memastikan token Firebase Auth Bearer aktif dan valid.
+    - `isOwner(userId)`: Memastikan `request.auth.uid == userId` (anti-IDOR mutlak).
+    - `hasActiveTrackingConsent(targetUserId)`: Memeriksa keberadaan dokumen `tracking_relations/${targetUserId}_${request.auth.uid}` dengan status `ACTIVE` di Firestore sebelum mengizinkan pembacaan koordinat lokasi target.
+  - Penegakan izin per koleksi:
+    - `/users/{userId}`: Akses baca dan tulis hanya diizinkan bagi pemilik akun (`isOwner(userId)`).
+    - `/pairing_tokens/{tokenId}`: Dapat dibaca oleh pengguna terautentikasi; hanya dapat dibuat dengan `target_uid == auth.uid` (mencegah pemalsuan identitas jemaah lain); mutasi `update` dan `delete` langsung dari klien dilarang keras (hanya via Cloud Functions).
+    - `/tracking_relations/{relationId}`: Hanya dapat dibaca oleh target atau pelacak yang bersangkutan; pembaruan hanya diizinkan bagi pihak target untuk mencabut izin pelacakan (`status = "REVOKED"`); pembuatan dan penghapusan langsung dari klien dilarang.
+    - `/locations/{userId}` (PII Telemetri Sensitif): Penulisan hanya oleh pemilik (`isOwner(userId)`); pembacaan hanya diizinkan untuk pemilik sendiri ATAU pelacak dengan relasi aktif `hasActiveTrackingConsent(userId)`. Pelacak yang dicabut izinnya (`REVOKED`) atau orang asing langsung ditolak oleh kernel Firestore.
+  - Konfigurasi Emulator & Proyek: `backend/firebase.json` dan `backend/firestore.indexes.json`.
+- **Pengujian Unit Keamanan & RBAC (`firestoreRules.test.ts`):**
+  - Menguji keabsahan struktur sintaksis file `firestore.rules`.
+  - Menguji 18 skenario evaluasi RBAC terinci (unauthenticated access denied, anti-IDOR user docs, anti-spoofing pairing tokens, anti-leak tracking relations, dan evaluasi izin pembacaan telemetri lokasi saat izin aktif vs saat dicabut seketika).
+  - Seluruh 28 pengujian unit backend (`npm --prefix backend test`) lulus 100% tanpa kegagalan.
 
 ---
 
