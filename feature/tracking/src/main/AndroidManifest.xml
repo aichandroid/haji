@@ -1,3 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Izin lokasi Android standard -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- Izin Foreground Service Android 14+ (API 34+) bertipe location -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+
+    <!-- Izin Notifikasi Android 13+ (API 33+) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application>
+        <service
+            android:name="com.haji2027.feature.tracking.service.LocationTrackingService"
+            android:foregroundServiceType="location"
+            android:exported="false" />
+    </application>
+
 </manifest>
