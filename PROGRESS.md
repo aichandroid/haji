@@ -34,7 +34,38 @@
 | **TASK-09**  | Fusi Sensor Rotasi Kompas & True Azimuth| ✅ **SELESAI** | 25-10-2026 | `BearingCalculator` (Haversine & Great Circle), kompensasi deklinasi Makkah (+2.8°), smoothing EMA, `CompassNavigationEngine`, unit test komprehensif. |
 | **TASK-10**  | Feature Places: UI Kompas Panah Compose | ✅ **SELESAI** | 25-10-2026 | Modul `:feature:places` (`PlacesListScreen`, `CompassScreen` SCR-04, `RotatingCompassArrow`, `AddPlaceDialog`, `CalibrationGuideDialog`, ViewModels, dan unit tests). |
 | **TASK-11**  | Firebase Auth Anonymous & Token DTO     | ✅ **SELESAI** | 25-10-2026 | Modul `:core:network` (`AuthManager`, `DefaultFirebaseAuthManager`, DTOs Token/QR, `TrackingApiClient`, dan unit tests). |
-| **TASK-12**  | Cloud Functions: Pairing Token Exchange | 🟡 **NEXT** | - | `/backend/functions` (`index.ts`, token TTL 5m, claim, revoke, purge). |
+| **TASK-12**  | Cloud Functions: Pairing Token Exchange | ✅ **SELESAI** | 25-10-2026 | `/backend/functions` (`index.ts`, `tokenService.ts`, rate limit 3/15m, transaksi atomik anti-replay, purge data, unit tests). |
+| **TASK-13**  | Firestore Security Rules Penegakan RBAC | 🟡 **NEXT** | - | `/backend/firestore.rules` (RBAC, consent verification, TTL 24h lokasi). |
+
+---
+
+## 2. LOG EKSEKUSI TUGAS SELESAI
+
+### TASK-12: Cloud Functions: Pairing Token Exchange (Selesai pada Commit: 18d59ce)
+- **Arsitektur Backend Serverless Firebase (`/backend`):**
+  - Struktur modular TypeScript di `/backend/functions` dengan Firebase Functions v2 HTTPS Callable.
+  - Penataan package root `backend/package.json` yang mendelegasikan eksekusi test dan build.
+- **Layanan Pertukaran Token & Konsensus Privasi (`tokenService.ts`):**
+  - `generatePairingToken`:
+    - Penerbitan token acak berkriptografi tinggi (`tok_${randomHex}`) bertempo ketat 5 menit (300 detik).
+    - Format URI QR standar `hajj2027://pair?t={tokenId}&u={targetUid}`.
+    - Pembatasan laju (*Rate Limiting*) maksimal 3 token per 15 menit per UID untuk mitigasi DoS / serangan brute-force.
+  - `claimPairingToken`:
+    - Eksekusi transaksi database atomik (*Firestore Transaction*) untuk mengeliminasi *race conditions*.
+    - Proteksi anti-replay (`TOKEN_ALREADY_USED` 409) jika token sudah pernah diklaim.
+    - Penolakan token kedaluwarsa (`TOKEN_EXPIRED` 410) jika masa aktif > 5 menit terlewati.
+    - Penolakan *self-pairing* (jemaah melacak dirinya sendiri).
+    - Pembuatan dokumen relasi pelacakan konsensus (`tracking_relations/${targetUid}_${trackerUid}`) dengan status `ACTIVE` dan masa berlaku hingga akhir musim haji 2027.
+  - `revokeTrackingAccess`:
+    - Pencabutan instan hak akses pelacak oleh pihak target, mengubah status relasi menjadi `REVOKED`.
+  - `purgeUserData` (*Right to be Forgotten* / UU PDP No. 27/2022):
+    - Penghapusan tuntas (*clean wipe*) profil pengguna, telemetri lokasi, seluruh pairing tokens, dan relasi tracking terkait.
+    - Penghapusan akun pengguna di Firebase Authentication.
+  - `syncLocations`:
+    - Validasi kepemilikan UID dan pembaruan koordinat mutakhir dari antrean offline SQLite jemaah.
+- **Pengujian Unit & Validasi (`npm --prefix backend test`):**
+  - Menggunakan Node.js test runner bawaan dengan `FakeFirestoreDatabase` in-memory.
+  - 9 pengujian unit mencakup seluruh skenario keberhasilan, batas rate limit, serangan replay, kedaluwarsa waktu, dan penghapusan total data pengguna (100% lulus dalam ~137ms).
 
 ---
 
