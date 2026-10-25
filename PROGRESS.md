@@ -44,10 +44,29 @@
 | **APP-SHELL**| Integrasi App Shell & Root Navigation   | ✅ **SELESAI** | 25-10-2026 | Modul `:app` (`AppContainer.kt`, `HajjApplication.kt`, `MainActivity.kt`, `RootScreen.kt`, navigasi lansia 56dp, unit tests). |
 | **RELEASE-CI**| Automasi CI/CD & Pipeline Distribusi   | ✅ **SELESAI** | 25-10-2026 | `.github/workflows` (`ci.yml`, `release.yml`), `proguard-rules.pro`, laman unduh mandiri `distribution/index.html`, manifest OTA, skrip hashing SHA-256. |
 | **AUDIT-31** | Technical & Security Audit Checklist   | ✅ **SELESAI** | 25-10-2026 | Kepatuhan penuh Bagian 31 & 28 SDD: Zero secrets, Firestore deny-by-default, IDOR protection, penolakan cleartext TLS 1.3, Android 14+ location service, Proguard PII stripping, 192 automated tests (100% pass), penerbitan `AUDIT_REPORT.md`. |
+| **FASE-04-OEM**| Validasi Lapangan & OEM Whitelist (Fase 4)| ✅ **SELESAI** | 25-10-2026 | Deteksi vendor OEM (Xiaomi, Oppo, Vivo, Samsung), intent auto-start/battery saver, `BatteryWhitelistCard` lansia $\ge 56\text{dp}$, `FIELD_VALIDATION_PROTOCOL.md` (benchmark 4 jam TC-BAT-01, observasi anti-silent kill, form uji lapangan). |
 
 ---
 
 ## 2. LOG EKSEKUSI TUGAS SELESAI
+
+### FASE-04-OEM: Validasi Lapangan & OEM Whitelist (Selesai pada Commit: 67e7fdc)
+- **Komponen Deteksi Produsen & Intent Helper (`OemVendor.kt` & `OemBatteryWhitelistHelper.kt`):**
+  - Menerapkan kepatuhan **FR-ONB-004**, **NFR-BAT-001**, dan Roadmap Bagian 32.1 (Fase 4):
+    - Mendeteksi pabrikan ponsel berbasis `Build.MANUFACTURER` dan `Build.BRAND` untuk Xiaomi/Redmi/POCO, OPPO/Realme/OnePlus, Vivo/iQOO, Samsung, Huawei/Honor, dan varian AOSP generic.
+    - Mengonstruksi hierarki intent terurut: Auto-start Activity MIUI/ColorOS/FuntouchOS, Power Hide Mode (*No Restrictions*), dan fallback mulus ke `ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS`, `ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS`, serta `ACTION_APPLICATION_DETAILS_SETTINGS`.
+    - Pengecekan status real-time via `PowerManager.isIgnoringBatteryOptimizations()`.
+- **Komponen UI Lansia WCAG AAA (`BatteryWhitelistCard.kt` & `SettingsScreen.kt`):**
+  - Kartu panduan ramah lansia dengan badge status aktif/perlu diatur, teks penjelasan mengapa pelacakan bisa dimatikan sepihak oleh vendor ponsel, dan 3 langkah aksi konkret spesifik pabrikan.
+  - Tombol aksi raksasa $\ge 56\text{dp}$ (`HajjDimens.MinTouchTargetSize`) yang langsung meluncurkan halaman setelan baterai ponsel pengguna.
+  - Terintegrasi langsung di dalam `SettingsScreen.kt` di antara bilah OTA dan Purge Data.
+- **Protokol Validasi Lapangan Standar Industri (`FIELD_VALIDATION_PROTOCOL.md`):**
+  - Prosedur uji benchmark baterai 4 jam (`TC-BAT-01`) dengan target konsumsi daya $\le 2.5\%$/jam (total $\le 10\%$ dalam 4 jam mobilitas).
+  - Matriks pengujian pada 4 kelompok perangkat jemaah (Xiaomi Redmi, Samsung Galaxy A, Oppo A/Reno, Vivo Y/V).
+  - Prosedur uji anti-silent kill (observasi 15m, 30m, 60m, 120m saat layar ponsel mati) dan perintah diagnostik ADB (`dumpsys batterystats`).
+  - Protokol uji keterbacaan lansia di bawah terik matahari (*outdoor sun glare*) dan formulir lembar catatan uji fisik siap cetak.
+- **Pengujian Unit Otomatis:**
+  - `OemBatteryWhitelistHelperTest.kt`: 8 pengujian unit memverifikasi deteksi seluruh kombinasi merk/brand, kelengkapan minimal 3 langkah panduan per vendor, dan struktur rantai fallback intent.
 
 ### AUDIT-31: Technical & Security Audit Checklist (Selesai pada Commit: 4bb104a)
 - **Pelaksanaan Audit Keamanan & Privasi (Bagian 31.1 `SYSTEM_DESIGN_DOCUMENT.md`):**
