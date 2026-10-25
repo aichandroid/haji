@@ -33,7 +33,50 @@
 | **TASK-08**  | GPS Multi-Sampling Averaging Engine     | ✅ **SELESAI** | 25-10-2026 | Mesin perataan koordinat median GPS, filter galat > 25m, provider `FusedLocationProviderClient` (`callbackFlow` + `awaitClose`), unit test komprehensif. |
 | **TASK-09**  | Fusi Sensor Rotasi Kompas & True Azimuth| ✅ **SELESAI** | 25-10-2026 | `BearingCalculator` (Haversine & Great Circle), kompensasi deklinasi Makkah (+2.8°), smoothing EMA, `CompassNavigationEngine`, unit test komprehensif. |
 | **TASK-10**  | Feature Places: UI Kompas Panah Compose | ✅ **SELESAI** | 25-10-2026 | Modul `:feature:places` (`PlacesListScreen`, `CompassScreen` SCR-04, `RotatingCompassArrow`, `AddPlaceDialog`, `CalibrationGuideDialog`, ViewModels, dan unit tests). |
-| **TASK-11**  | Firebase Auth Anonymous & Token DTO     | 🟡 **NEXT** | - | Modul `:core:network` (`FirebaseAuth.kt`, anonymouse auth, DTOs). |
+| **TASK-11**  | Firebase Auth Anonymous & Token DTO     | ✅ **SELESAI** | 25-10-2026 | Modul `:core:network` (`AuthManager`, `DefaultFirebaseAuthManager`, DTOs Token/QR, `TrackingApiClient`, dan unit tests). |
+| **TASK-12**  | Cloud Functions: Pairing Token Exchange | 🟡 **NEXT** | - | `/backend/functions` (`index.ts`, token TTL 5m, claim, revoke, purge). |
+
+---
+
+## 2. LOG EKSEKUSI TUGAS SELESAI
+
+### TASK-11: Firebase Auth Anonymous & Token DTO (Selesai pada Commit: 45ef7dd)
+- **Scaffolding Modul Jaringan Baru (`:core:network`):**
+  - Didaftarkan di `settings.gradle.kts` dan ditambahkan sebagai dependensi modul `:app` dan `:feature:tracking`.
+  - Konfigurasi `build.gradle.kts` dengan `kotlinx.serialization` dan dependensi Firebase BOM 33.5.1 (`firebase-auth`, `firebase-firestore`, `firebase-functions`, `kotlinx-coroutines-play-services`).
+  - `AndroidManifest.xml` dengan izin `INTERNET` dan `ACCESS_NETWORK_STATE`.
+- **Manajemen Autentikasi Anonim (`core/network/auth/`):**
+  - `AuthUser.kt`: Model data pengguna anonim (`uid`, `isAnonymous`, `idToken`, `createdAtEpochMs`).
+  - `AuthState.kt`: State machine reaktif (`Unauthenticated`, `Loading`, `Authenticated(user)`, `Error(message)`).
+  - `AuthManager.kt`: Kontrak antarmuka Clean Architecture untuk mengisolasi lapisan UI dan Service dari Firebase SDK langsung.
+  - `FirebaseAuthProvider.kt` & `DefaultFirebaseAuthProvider.kt`: Abstraksi delegate tingkat rendah Firebase Authentication SDK untuk memfasilitasi pengujian unit tanpa server cloud.
+  - `DefaultFirebaseAuthManager.kt`:
+    - Mengelola alur login anonim otomatis transparan (`ensureAuthenticated()`) tanpa membebani jemaah lansia dengan input email/password.
+    - Dilengkapi proteksi konkurensi Coroutines `Mutex` untuk mencegah panggilan ganda secara bersamaan.
+    - Pemulihan sesi otomatis (*transparent re-authentication*) jika sesi token habis (`AUTH_REQUIRED` 401).
+    - Menghapus akun permanen di Firebase Auth saat pengguna meminta pembersihan data (`deleteAccount()`, Right to be Forgotten).
+- **Data Transfer Objects & Kontrak API (`core/network/dto/`):**
+  - `TokenDtos.kt`: Implementasi DTO `@Serializable` yang presisi sesuai Bagian 21 `SYSTEM_DESIGN_DOCUMENT.md`:
+    - `GenerateTokenRequest` & `GenerateTokenResponse` (token UUID, payload URI QR, expires at 300s TTL).
+    - `ClaimTokenRequest` & `ClaimTokenResponse` (token ID, label pelacak, ID relasi, target user ID).
+    - `RevokeAccessRequest` & `RevokeAccessResponse` (pencabutan instan hak akses pelacak).
+    - `PurgeUserDataResponse` (penghapusan akun total dan konfirmasi).
+    - `LocationSyncRequest` & `LocationPointDto` (sinkronisasi batch koordinat dari antrean offline SQLite).
+  - `QrPayload.kt`:
+    - Generator dan parser URI `hajj2027://pair?t={tokenId}&u={targetUid}`.
+    - Validasi ketat terhadap skema URI, authority, dan parameter kueri wajib dengan penanganan whitespace.
+  - `ApiError.kt`:
+    - Pemetaan kode error standar backend (`AUTH_REQUIRED`, `TOKEN_EXPIRED`, `TOKEN_ALREADY_USED`, `TRACKING_ACCESS_REVOKED`, `RATE_LIMITED`, `NETWORK_UNAVAILABLE`).
+    - `ApiException` dengan kode terstruktur dan HTTP status code.
+- **Klien Cloud Functions (`core/network/api/`):**
+  - `TrackingApiClient.kt` & `FunctionsCaller.kt`: Kontrak operasi jaringan tingkat tinggi dan abstraksi HTTPS Callable.
+  - `DefaultTrackingApiClient.kt`: Klien jaringan yang secara otomatis menyematkan autentikasi anonim, mengeksekusi callable functions, dan memvalidasi respon error secara terpusat.
+- **Pengujian Unit & Validasi:**
+  - `FirebaseAuthManagerTest.kt`: Pengujian alur sign-in anonim, pemakaian ulang sesi yang sudah ada, penanganan kegagalan jaringan, penyegaran ID token, re-autentikasi transparan, sign-out, dan penghapusan akun.
+  - `TokenDtosSerializationTest.kt`: Pengujian round-trip serialisasi/deserialisasi terhadap cuplikan JSON riil dari spesifikasi Bagian 21 SDD.
+  - `QrPayloadTest.kt`: Pengujian pembuatan URI, penguraian parameter, pemangkasan whitespace, parameter tertukar, serta penolakan skema/parameter tidak valid.
+  - `TrackingApiClientTest.kt`: Pengujian pemanggilan Cloud Functions, mapping kode error API ke `ApiException`, dan eksekusi penghapusan akun lokal saat purge data.
+  - Verifikasi skrip Python: 100% validasi sintaksis kurung pada seluruh 16 file Kotlin di `:core:network` dan validasi logika QR/JSON.
 
 ---
 
