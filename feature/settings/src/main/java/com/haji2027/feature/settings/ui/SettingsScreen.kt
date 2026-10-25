@@ -56,6 +56,7 @@ import com.haji2027.core.designsystem.theme.SurfaceWhite
 import com.haji2027.core.designsystem.theme.TypographyButton
 import com.haji2027.core.designsystem.theme.TypographyElderlyBody
 import com.haji2027.core.designsystem.theme.TypographyElderlyTitle
+import com.haji2027.feature.settings.battery.BatteryWhitelistCard
 import com.haji2027.feature.settings.ota.ContentSource
 
 /**
@@ -490,6 +491,10 @@ fun SettingsScreen(
                     }
                 }
             }
+
+            // Bagian Optimasi Baterai & Ketahanan Pelacakan OEM (FR-ONB-004 & TC-BAT-01)
+            Spacer(modifier = Modifier.height(HajjDimens.SpaceExtraLarge))
+            BatteryWhitelistCard()
 
             // Bagian Hak Subjek Data: Pembersihan Total (Right to be Forgotten - TASK-18)
             if (purgeViewModel != null) {
