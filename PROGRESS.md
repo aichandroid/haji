@@ -31,11 +31,46 @@
 | **TASK-06**  | Feature Guide: Bacaan Doa & Detail Step | ✅ **SELESAI** | 24-10-2026 | `GuideDetailScreen` (SCR-02), `DoaScreen` (SCR-03), integrasi dalil doa dari muslim.or.id, rumaysho.com, almanhaj.or.id, & yufid.com, tombol ukuran teks lansia. |
 | **TASK-07**  | Room DB: Saved Places & DAOs            | ✅ **SELESAI** | 25-10-2026 | Entitas Room `SavedPlaceEntity`, indeks `idx_saved_places_category`, `PlacesDao`, `PlacesRepository` & `DefaultPlacesRepository`, unit test komprehensif. |
 | **TASK-08**  | GPS Multi-Sampling Averaging Engine     | ✅ **SELESAI** | 25-10-2026 | Mesin perataan koordinat median GPS, filter galat > 25m, provider `FusedLocationProviderClient` (`callbackFlow` + `awaitClose`), unit test komprehensif. |
-| **TASK-09**  | Fusi Sensor Rotasi Kompas & True Azimuth| 🟡 **NEXT** | - | Modul `:feature:places` (`CompassNav.kt`). |
+| **TASK-09**  | Fusi Sensor Rotasi Kompas & True Azimuth| ✅ **SELESAI** | 25-10-2026 | `BearingCalculator` (Haversine & Great Circle), kompensasi deklinasi Makkah (+2.8°), smoothing EMA, `CompassNavigationEngine`, unit test komprehensif. |
+| **TASK-10**  | Feature Places: UI Kompas Panah Compose | 🟡 **NEXT** | - | Modul `:feature:places` (`CompassScreen`). |
 
 ---
 
 ## 2. LOG EKSEKUSI TUGAS SELESAI
+
+### TASK-09: Fusi Sensor Rotasi Kompas & True Azimuth (Selesai pada Commit: 4ac82d2)
+- **Kalkulator Spasial & Bearing Geografis (`BearingCalculator.kt`):**
+  - Jarak Haversine $d = 2R \cdot \text{atan2}(\sqrt{a}, \sqrt{1-a})$ dengan radius bumi $6.371\text{ km}$.
+  - Initial Great Circle Bearing $T_b = \text{atan2}(\sin(\Delta lng) \cos(lat_2), \dots)$ dalam rentang $[0^\circ, 360^\circ)$.
+  - True Azimuth $A_t = (A_m + D + 360^\circ) \pmod{360^\circ}$ dengan kompensasi deklinasi magnetik Makkah $+2.8^\circ$.
+  - Sudut Relatif Panah Navigasi $\theta = (T_b - A_t + 360^\circ) \pmod{360^\circ}$ terhadap puncak layar smartphone.
+  - `shortestAngleDiff()`: Perhitungan jarak sudut terpendek $[-180^\circ, 180^\circ]$ untuk interpolasi rotasi jarum panah tanpa lompatan liar di perbatasan $360^\circ$.
+  - `formatDistance()`: Pemformatan ramah lansia kontras tinggi (meter untuk $<1000\text{m}$, km desimal untuk $\ge 1\text{km}$).
+- **Model Orientasi & Navigasi (`CompassModels.kt`):**
+  - `CompassOrientation`: Data kelas orientasi (`magneticAzimuth`, `trueAzimuth`, `declination`, `pitch`, `roll`, `accuracy`).
+  - `CompassAccuracy`: Enum keandalan sensor magnetometer (`HIGH`, `MEDIUM`, `LOW`, `UNRELIABLE`).
+  - `NavigationAccuracyStatus`: Penegakan state machine navigasi Section 17.3.3 (`HIGH` $\le 10\text{m}$, `MODERATE` $11\text{--}30\text{m}$, `DEGRADED` $>30\text{m}$, `CALIBRATION_NEEDED` saat sensor `UNRELIABLE`).
+  - `NavigationTargetBearing`: Paket data hasil fusi navigasi lengkap (derajat panah, jarak, teks format, status akurasi).
+- **Penyedia Sensor Android Anti-Leak (`AndroidOrientationSensorProvider.kt`):**
+  - Mengutamakan sensor fusi hardware `Sensor.TYPE_ROTATION_VECTOR` dengan fallback anggun ke `TYPE_ACCELEROMETER` + `TYPE_MAGNETIC_FIELD`.
+  - Menerapkan Exponential Moving Average (EMA) smoothing ($\alpha = 0.25$) sirkular untuk meredam jitter/getaran jarum kompas.
+  - Menggunakan `callbackFlow` dengan `awaitClose { sensorManager.unregisterListener(listener) }` untuk mencegah kebocoran baterai saat layar mati/tidak aktif.
+- **Mesin Navigasi Kompas (`CompassNavigationEngine.kt`):**
+  - Memadukan koordinat GPS pengguna dan target dengan orientasi kompas real-time.
+  - Memetakan kualitas sinyal ke `NavigationAccuracyStatus` secara otomatis.
+- **Pengujian Unit & Verifikasi Matematis:**
+  - `BearingCalculatorTest.kt`:
+    1. Pengujian jarak Haversine riil (Hotel Ajyad ke Ka'bah: ~389 meter).
+    2. Pengujian target bearing arah utara murni (~0°), timur murni (90°), dan barat murni (270°).
+    3. Pengujian kompensasi deklinasi magnetik positif & negatif.
+    4. Pengujian sudut relatif panah terhadap berbagai arah hadap pengguna.
+    5. Pengujian `shortestAngleDiff` menyeberangi batas $360^\circ$ ($355^\circ \rightarrow 5^\circ = +10^\circ$).
+    6. Pengujian format jarak ramah lansia.
+  - `CompassNavigationEngineTest.kt`:
+    1. Pengujian kalkulasi terpadu bearing panah dan jarak.
+    2. Pengujian klasifikasi status akurasi GPS (High, Moderate, Degraded).
+    3. Pengujian deteksi kebutuhan kalibrasi angka 8 saat magnetometer `UNRELIABLE`.
+  - Skrip verifikasi mandiri Python: Memvalidasi seluruh perhitungan trigonometri bola besar dan normalisasi sudut lingkaran (100% lolos).
 
 ### TASK-08: GPS Multi-Sampling Averaging Engine (Selesai pada Commit: dd3c788)
 - **Model Data Sampling & Agregasi (`GpsSample.kt`):**
