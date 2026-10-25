@@ -2,7 +2,7 @@
 **Target Rilis:** Musim Haji 1448 H (Mei – Juni 2027)  
 **Platform:** Android Native (Kotlin · Jetpack Compose · Offline-First)  
 **Single Source of Truth Desain:** `SYSTEM_DESIGN_DOCUMENT.md`  
-**Terakhir Diperbarui:** 24 Oktober 2026  
+**Terakhir Diperbarui:** 25 Oktober 2026  
 
 ---
 
@@ -29,11 +29,41 @@
 | **TASK-04**  | Room DB: Checklist & FTS4 Search Table | ✅ **SELESAI** | 24-10-2026 | Room SQLite `AppDatabase`, tabel `checklist_progress`, tabel virtual FTS4 `guide_search_fts`, query sanitizer & indexer, repository layer. |
 | **TASK-05**  | Feature Guide: Beranda "Hari Ini" & UI  | ✅ **SELESAI** | 24-10-2026 | `HomeScreen`, `HomeViewModel`, 3 tombol aksi raksasa ramah lansia ($\ge 56\text{ dp}$), bilah progres checklist hari ini, integrasi kalender Umm al-Qura. |
 | **TASK-06**  | Feature Guide: Bacaan Doa & Detail Step | ✅ **SELESAI** | 24-10-2026 | `GuideDetailScreen` (SCR-02), `DoaScreen` (SCR-03), integrasi dalil doa dari muslim.or.id, rumaysho.com, almanhaj.or.id, & yufid.com, tombol ukuran teks lansia. |
-| **TASK-07**  | Room DB: Saved Places & DAOs            | 🟡 **NEXT** | - | Modul `:core:database` (PlacesDao & SavedPlaces). |
+| **TASK-07**  | Room DB: Saved Places & DAOs            | ✅ **SELESAI** | 25-10-2026 | Entitas Room `SavedPlaceEntity`, indeks `idx_saved_places_category`, `PlacesDao`, `PlacesRepository` & `DefaultPlacesRepository`, unit test komprehensif. |
+| **TASK-08**  | GPS Multi-Sampling Averaging Engine     | 🟡 **NEXT** | - | Modul `:feature:places` (`GpsEngine.kt`). |
 
 ---
 
 ## 2. LOG EKSEKUSI TUGAS SELESAI
+
+### TASK-07: Room DB: Saved Places & DAOs (Selesai pada Commit: 6e9b205)
+- **Entitas Room Tempat Tersimpan (`SavedPlaceEntity.kt`):**
+  - Tabel `saved_places` dengan kolom: `place_id` (PK), `name`, `category` (DOOR, HOTEL, CAMP, BUS, OTHER), `latitude`, `longitude`, `accuracy_meters`, `notes`, `photo_uri`, dan `created_at_epoch_ms`.
+  - Indeks performa kategori `idx_saved_places_category` untuk query cepat per jenis tempat.
+  - Pemetaan dua arah aman domain-ke-entitas (`toDomain()` & `fromDomain()`) dengan fallback ke `PlaceCategory.OTHER` jika kategori asing.
+- **Data Access Object (`PlacesDao.kt`):**
+  - `getAllPlacesFlow()`: Mengalirkan seluruh tempat tersimpan terurut mundur berdasarkan `created_at_epoch_ms DESC`.
+  - `getPlacesByCategoryFlow(category)`: Query reaktif Flow untuk menyaring berdasarkan kategori tempat.
+  - `getPlaceById()` & `getPlaceByIdFlow()`: Akses instan titik tempat berdasarkan ID.
+  - `insertPlace()` & `insertPlaces()`: Penyimpanan titik dengan strategi `OnConflictStrategy.REPLACE`.
+  - `updatePlace()`, `deletePlace()`, dan `deletePlaceById()`: Operasi manipulasi dan penghapusan titik tempat.
+  - `deleteAllPlaces()`: Pembersihan seluruh entri basis data untuk mendukung kepatuhan *Right to be Forgotten* (UU PDP & Kebijakan Privasi).
+  - `getPlacesCount()`: Penghitungan jumlah tempat tersimpan.
+- **Integrasi Basis Data (`AppDatabase.kt`):**
+  - Memasukkan `SavedPlaceEntity::class` ke dalam deklarasi Room `@Database`.
+  - Menyediakan abstract getter `placesDao(): PlacesDao`.
+- **Abstraksi Bersih Repositori (`PlacesRepository.kt` & `DefaultPlacesRepository.kt`):**
+  - Mengisolasi dependensi langsung Room DAO dari layer UI `:feature:places`.
+  - Menyediakan kontrak reaktif Flow: `observeAllPlaces()`, `observePlacesByCategory()`, dan `observePlaceById()`.
+- **Pengujian Unit & Validasi SQLite:**
+  - `PlacesRepositoryTest.kt`:
+    1. Pengujian simpan dan baca tempat (`savePlace`, `getPlaceById`, verifikasi seluruh atribut).
+    2. Pengujian pengurutan `observeAllPlaces` terurut descending berdasarkan waktu pembuatan.
+    3. Pengujian penyaringan kategori `observePlacesByCategory` (DOOR, HOTEL, CAMP).
+    4. Pengujian penghapusan entitas (`deletePlace` & `deletePlaceById`).
+    5. Pengujian pembersihan total `deleteAllPlaces` (Right to be Forgotten).
+    6. Pengujian ketahanan pemetaan enum `toDomain()` terhadap kategori tak dikenal.
+  - Skrip pengujian mandiri SQLite3: Memverifikasi DDL SQLite tabel `saved_places`, indeks `idx_saved_places_category`, dan seluruh operasi SQL terhadap SQLite engine langsung.
 
 ### TASK-06: Feature Guide: Bacaan Doa & Detail Step (Selesai pada Commit: c219477)
 - **Sumber Data Doa & Validasi Referensi Shahih:**
