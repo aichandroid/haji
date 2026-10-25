@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Konfigurasi Keamanan Jaringan — Panduan Haji 2027 (Kepatuhan Section 31.1)
+  Menolak seluruh sambungan tidak terenkripsi (cleartext HTTP traffic rejected).
+  Mewajibkan sambungan TLS aman ke Firebase dan CDN HTTPS static host.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">panduanhaji2027.org</domain>
+        <domain includeSubdomains="true">firebaseio.com</domain>
+        <domain includeSubdomains="true">googleapis.com</domain>
+        <domain includeSubdomains="true">cloudfunctions.net</domain>
+    </domain-config>
+</network-security-config>
