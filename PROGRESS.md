@@ -39,12 +39,45 @@
 | **TASK-14**  | Android Location Foreground Service     | ✅ **SELESAI** | 25-10-2026 | Modul `:feature:tracking` (`LocationTrackingService.kt`, adaptif 30s/300s, ongoing notification, Android 14+ location type, unit tests). |
 | **TASK-15**  | Offline Location Queue & Sync Manager   | ✅ **SELESAI** | 25-10-2026 | Modul `:core:database` & `:feature:tracking` (`location_sync_queue`, FIFO 50, `LocationQueueRepository`, `SyncManager` Data Minimization, unit tests). |
 | **TASK-16**  | Feature Tracking: QR Share & Scan UI    | ✅ **SELESAI** | 25-10-2026 | Modul `:feature:tracking` (`TrackingMainScreen.kt`, `QrShareScreen.kt` SCR-05, `QrScanScreen.kt`, `ConsentManagerScreen.kt` SCR-06, `TrackingViewModel.kt`, unit tests). |
-| **TASK-17**  | OTA Content Update Manager & Hash Check | 🟡 **NEXT** | - | Modul `:feature:settings` (`OtaEngine.kt`, verifikasi SHA-256 hash, dual-layer fallback). |
-| **TASK-18**  | E2E Purge Data: Right to be Forgotten   | ⚪ PENDING | - | Modul `:feature:settings` & `:backend` (Purge API, pembersihan Room, reset Auth). |
+| **TASK-17**  | OTA Content Update Manager & Hash Check | ✅ **SELESAI** | 25-10-2026 | Modul `:feature:settings` (`OtaEngine.kt`, `DualLayerContentManager.kt`, verifikasi integritas SHA-256, `SettingsScreen.kt`, unit tests). |
+| **TASK-18**  | E2E Purge Data: Right to be Forgotten   | 🟡 **NEXT** | - | Modul `:feature:settings` & `:backend` (Purge API, pembersihan Room, reset Auth). |
 
 ---
 
 ## 2. LOG EKSEKUSI TUGAS SELESAI
+
+### TASK-17: OTA Content Update Manager & Hash Check (Selesai pada Commit: 3ad260a)
+- **Model Manifest Pembaruan (`OtaManifest.kt` di `:feature:settings`):**
+  - Entitas `@Serializable` yang merefleksikan berkas `manifest.json` di server statis HTTPS (`version`, `versionCode`, `downloadUrl`, `sha256Checksum`, `releaseNotes`, `publishedDate`).
+  - Pembanding versi semver otomatis (`isNewerThan`) untuk mendeteksi rilis revisi materi ustadz secara akurat.
+- **Klien Pengunduh Terkelola (`OtaDownloader.kt`):**
+  - Kontrak `OtaDownloader` dan implementasi `DefaultOtaDownloader` berbasis `HttpURLConnection` dengan batas waktu koneksi (15s) dan pembacaan (30s) terisolasi pada `Dispatchers.IO`.
+- **Mesin Integritas & Pembaruan OTA (`OtaEngine.kt`):**
+  - Mengimplementasikan alur verifikasi ketat FR-DIST-002 dan TC-DIST-01:
+    - Menghitung nilai hash SHA-256 dari byte unduhan secara mandiri (`MessageDigest.getInstance("SHA-256")`).
+    - Membandingkan nilai hash lokal dengan `sha256Checksum` dari manifest server. Jika tidak cocok (indikasi bit korup / MITM), melempar `OtaIntegrityException` dan membatalkan seluruh operasi tanpa menyentuh data aktif.
+    - Memvalidasi parsing model domain JSON menggunakan `HajjContentParser.parseJson()`.
+    - Prosedur penggantian atomik (*atomic file swap*): menulis ke berkas sementara `content_temp.json`, kemudian mengeksekusi `Files.move(..., ATOMIC_MOVE)` menjadi `content_active.json`. Jika terjadi kendala di tengah jalan, berkas sementara otomatis dibersihkan tanpa meninggalkan residu korup.
+    - Menyediakan mekanisme rollback instan (`rollbackToBundled()`).
+- **Arsitektur Konten Dua Lapis (`DualLayerContentManager.kt`):**
+  - Menerapkan arsitektur ADR-003:
+    - **Layer 2 (OTA Overlay Cache):** Memprioritaskan `content_active.json` di direktori privat aplikasi jika tersedia dan valid.
+    - **Layer 1 (Bundled Assets):** Menjamin *zero crash guarantee* dengan fallback otomatis ke berkas bawaan APK `assets/content_v1.0.0.json` jika Layer 2 tidak ditemukan atau korup di disk.
+- **Antarmuka & Pengaturan Materi (`SettingsScreen.kt`, `OtaViewModel.kt`, `OtaUiState.kt`):**
+  - Menampilkan nomor versi aktif, lapisan asal (`Layer 1 Bawaan APK` vs `Layer 2 Unduhan OTA`), dan lencana verifikasi kriptografi SHA-256.
+  - Tombol aksi `[ PERIKSA PEMBARUAN MATERI ]` dengan ukuran target sentuh ramah lansia ($\ge 56\text{dp}$).
+  - Kartu dialog interaktif jika rilis baru terdeteksi dengan tombol `[ UNDUH & TERAPKAN PEMBARUAN ]`.
+  - Penanganan error terinci dengan bahasa ramah jemaah: memperingatkan jika tanda tangan hash server tidak cocok dan menegaskan bahwa materi tetap aman menggunakan versi bawaan.
+  - Tombol `[ KEMBALIKAN KE MATERI BAWAAN ]` jika jemaah ingin kembali ke baseline awal.
+- **Pengujian Unit Komprehensif:**
+  - `OtaEngineTest.kt`:
+    - Menguji deteksi versi lebih baru vs versi lama/sama.
+    - Menguji unduhan dan swap atomik sukses dengan hash valid.
+    - Menguji penolakan muatan korup akibat ketidakcocokan SHA-256 (TC-DIST-01).
+    - Menguji penolakan JSON tidak valid meskipun hash cocok.
+    - Menguji pembersihan rollback berkas overlay.
+    - Menguji fallback Dual-Layer saat berkas aktif korup di penyimpanan.
+  - `OtaViewModelTest.kt`: Menguji seluruh siklus state UI (`Idle`, `Checking`, `UpdateAvailable`, `AlreadyUpToDate`, `UpdateSuccess`, `Error`, `rollbackToBundled`, dan dismiss banner notifikasi).
 
 ### TASK-16: Feature Tracking: QR Share & Scan UI (Selesai pada Commit: c257d37)
 - **Komponen Visual Kode QR 2D Matrix (`QrCodeCanvas.kt` di `:feature:tracking`):**
