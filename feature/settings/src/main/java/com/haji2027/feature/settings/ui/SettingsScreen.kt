@@ -64,6 +64,7 @@ import com.haji2027.feature.settings.ota.ContentSource
 @Composable
 fun SettingsScreen(
     viewModel: OtaViewModel,
+    purgeViewModel: com.haji2027.feature.settings.purge.PurgeViewModel? = null,
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -488,6 +489,12 @@ fun SettingsScreen(
                         )
                     }
                 }
+            }
+
+            // Bagian Hak Subjek Data: Pembersihan Total (Right to be Forgotten - TASK-18)
+            if (purgeViewModel != null) {
+                Spacer(modifier = Modifier.height(HajjDimens.SpaceExtraLarge))
+                PurgeDataSection(viewModel = purgeViewModel)
             }
         }
     }
