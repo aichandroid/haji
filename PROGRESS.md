@@ -38,11 +38,47 @@
 | **TASK-13**  | Firestore Security Rules Penegakan RBAC | ✅ **SELESAI** | 25-10-2026 | `/backend/firestore.rules` (RBAC, consent verification `hasActiveTrackingConsent`, anti-IDOR, emulator config, unit tests). |
 | **TASK-14**  | Android Location Foreground Service     | ✅ **SELESAI** | 25-10-2026 | Modul `:feature:tracking` (`LocationTrackingService.kt`, adaptif 30s/300s, ongoing notification, Android 14+ location type, unit tests). |
 | **TASK-15**  | Offline Location Queue & Sync Manager   | ✅ **SELESAI** | 25-10-2026 | Modul `:core:database` & `:feature:tracking` (`location_sync_queue`, FIFO 50, `LocationQueueRepository`, `SyncManager` Data Minimization, unit tests). |
-| **TASK-16**  | Feature Tracking: QR Share & Scan UI    | 🟡 **NEXT** | - | Modul `:feature:tracking` (`QrScreen.kt`, ML Kit Scanner, consent manager). |
+| **TASK-16**  | Feature Tracking: QR Share & Scan UI    | ✅ **SELESAI** | 25-10-2026 | Modul `:feature:tracking` (`TrackingMainScreen.kt`, `QrShareScreen.kt` SCR-05, `QrScanScreen.kt`, `ConsentManagerScreen.kt` SCR-06, `TrackingViewModel.kt`, unit tests). |
+| **TASK-17**  | OTA Content Update Manager & Hash Check | 🟡 **NEXT** | - | Modul `:feature:settings` (`OtaEngine.kt`, verifikasi SHA-256 hash, dual-layer fallback). |
+| **TASK-18**  | E2E Purge Data: Right to be Forgotten   | ⚪ PENDING | - | Modul `:feature:settings` & `:backend` (Purge API, pembersihan Room, reset Auth). |
 
 ---
 
 ## 2. LOG EKSEKUSI TUGAS SELESAI
+
+### TASK-16: Feature Tracking: QR Share & Scan UI (Selesai pada Commit: c257d37)
+- **Komponen Visual Kode QR 2D Matrix (`QrCodeCanvas.kt` di `:feature:tracking`):**
+  - Menggambar matriks QR deterministik resolusi tinggi secara murni menggunakan Jetpack Compose `Canvas` tanpa library eksternal berat.
+  - Memuat 3 Finder Patterns standar ($7 \times 7$), Timing Patterns sinkronisasi baris/kolom ke-6, dan modul data yang di-hash deterministik menggunakan SHA-256 dari string payload URI (`hajj2027://pair?t={tokenId}&u={targetUid}`).
+  - Palet warna kontras tinggi ramah lansia: `PrimaryDarkNavy` (`#0C4A6E`) di atas latar putih bersih `SurfaceWhite` dengan pembungkus sudut membulat `CardCornerRadius`.
+- **Layar SCR-05: Bagikan Lokasi Saya (`QrShareScreen.kt`):**
+  - Tampilan kode QR pairing berdurasi 5 menit dengan hitung mundur besar real-time (`36sp` tebal, format `MM : SS`).
+  - Pewarnaan adaptif timer: merah `StatusRedError` saat sisa waktu $\le 60\text{ detik}$, biru `PrimaryTrustBlue` saat waktu masih banyak.
+  - Kotak peringatan kedaluwarsa tegas saat waktu 5 menit habis demi melindungi privasi jemaah.
+  - Kartu ketentuan privasi eksplisit:
+    - *Kode ini hanya dapat digunakan SATU KALI.*
+    - *Hanya orang yang memindai kode ini yang dapat melihat lokasi Anda.*
+    - *Anda dapat mencabut izin pelacakan kapan saja.*
+  - Tombol aksi ramah lansia target sentuh $\ge 56\text{dp}$: `[ BUAT KODE BARU ]` dan `[ SELESAI / TUTUP ]`.
+- **Layar Pindai & Klaim Pasangan QR (`QrScanScreen.kt`):**
+  - Formulir input teks / scanner kode pasangan dengan parsing skema ketat `QrPayload.parse()`.
+  - Input label hubungan keluarga ("Suami", "Istri", "Anak Perempuan", dll.) dengan filter chip cepat untuk mempermudah jemaah lansia.
+  - Umpan balik visual interaktif untuk status pemrosesan (`CircularProgressIndicator`), kartu error merah, dan kartu sukses hijau dengan tombol `[ KEMBALI KE MENU UTAMA ]`.
+- **Layar SCR-06: Manajemen Izin "Siapa yang Melacak Saya" (`ConsentManagerScreen.kt`):**
+  - Kartu status berbagi lokasi: badge aktif `[ AKTIF - BERJALAN ]` (hijau) atau `[ TIDAK AKTIF ]` (amber) yang mencerminkan status service foreground secara reaktif.
+  - Daftar anggota keluarga terdaftar dengan nama/label, tanggal terhubung, status pemantauan aktif, dan tombol individual `[ CABUT IZIN ]` berukuran $\ge 56\text{dp}$ dengan indikator loading saat proses pencabutan berlangsung.
+  - Tombol darurat raksasa `[ STOP SEMUA PELACAKAN ]` berlatar belakang merah (`StatusRedError`) untuk mematikan layanan foreground dan pengiriman lokasi seketika ke seluruh keluarga.
+  - Kartu peringatan privasi di bagian bawah.
+- **Layar Utama Hub Pelacakan (`TrackingMainScreen.kt`):**
+  - Layar orkestrator yang mengintegrasikan tab `MAIN`, `SHARE_QR`, `SCAN_QR`, dan `CONSENT_LIST`.
+  - Menampilkan ringkasan status layanan lokasi, tombol toggle aktivasi instan, serta 3 kartu fitur utama.
+  - Spanduk feedback informasi/notifikasi yang dapat ditutup.
+- **State Management & ViewModel (`TrackingUiState.kt` & `TrackingViewModel.kt`):**
+  - Arsitektur MVI/StateFlow reaktif (`TrackingUiState`, `ShareQrState`, `ClaimQrState`, `TrackerConsentItem`).
+  - Ticker coroutine 1 detik mandiri untuk hitung mundur durasi QR token 300 detik menuju `ShareQrState.Expired`.
+  - Integrasi terpadu dengan `TrackingApiClient`, `AuthManager`, `TrackingController`, dan `SyncManager`.
+- **Pengujian Unit Komprehensif (`TrackingViewModelTest.kt`):**
+  - 13 kasus uji mencakup: state awal & otentikasi akun, observasi aliran status foreground service, pembuatan token QR sukses & tick hitung mundur hingga kedaluwarsa, penanganan kegagalan pembuatan token QR, klaim token sukses via skema QR, penolakan klaim jika label kosong atau skema URL rusak, penanganan error API klaim token, pencabutan izin (revoke consent) sukses & gagal, pemicu start/stop service pelacakan, transisi tab navigasi, dan reset feedback message.
 
 ### TASK-15: Offline Location Queue & Sync Manager (Selesai pada Commit: f7dcdb2)
 - **Tabel Antrean Offline SQLite (`location_sync_queue` di `:core:database`):**
