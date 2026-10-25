@@ -40,11 +40,33 @@
 | **TASK-15**  | Offline Location Queue & Sync Manager   | ✅ **SELESAI** | 25-10-2026 | Modul `:core:database` & `:feature:tracking` (`location_sync_queue`, FIFO 50, `LocationQueueRepository`, `SyncManager` Data Minimization, unit tests). |
 | **TASK-16**  | Feature Tracking: QR Share & Scan UI    | ✅ **SELESAI** | 25-10-2026 | Modul `:feature:tracking` (`TrackingMainScreen.kt`, `QrShareScreen.kt` SCR-05, `QrScanScreen.kt`, `ConsentManagerScreen.kt` SCR-06, `TrackingViewModel.kt`, unit tests). |
 | **TASK-17**  | OTA Content Update Manager & Hash Check | ✅ **SELESAI** | 25-10-2026 | Modul `:feature:settings` (`OtaEngine.kt`, `DualLayerContentManager.kt`, verifikasi integritas SHA-256, `SettingsScreen.kt`, unit tests). |
-| **TASK-18**  | E2E Purge Data: Right to be Forgotten   | 🟡 **NEXT** | - | Modul `:feature:settings` & `:backend` (Purge API, pembersihan Room, reset Auth). |
+| **TASK-18**  | E2E Purge Data: Right to be Forgotten   | ✅ **SELESAI** | 25-10-2026 | Modul `:feature:settings` & `:backend` (`DataPurgeManager.kt`, dialog 2-langkah, pembersihan Room, reset Auth, unit tests). |
 
 ---
 
 ## 2. LOG EKSEKUSI TUGAS SELESAI
+
+### TASK-18: E2E Purge Data: Right to be Forgotten (Selesai pada Commit: cd2482d)
+- **Manajer Pembersihan Data End-to-End (`DataPurgeManager.kt` di `:feature:settings`):**
+  - Mengimplementasikan alur pembersihan tuntas hak subjek data (Right to be Forgotten) sesuai **FR-DIST-003**, **FR-DIST-004**, **TC-PRIV-01**, dan Bagian 28.3 `SYSTEM_DESIGN_DOCUMENT.md`:
+    1. **Pembersihan Cloud Server:** Memanggil Cloud Function `TrackingApiClient.purgeUserData()` untuk menghapus seluruh dokumen relasi pelacakan, titik koordinat, dan riwayat di Cloud Firestore.
+    2. **Pembersihan Firebase Auth:** Memanggil `AuthManager.deleteAccount()` dan `signOut()` untuk membersihkan sesi dan kredensial token otentikasi.
+    3. **Pembersihan Basis Data SQLite Lokal (Room):** Mengosongkan seluruh tabel `saved_places` (`deleteAllPlaces()`), `checklist_progress` (`clearAllChecklist()`), dan `location_sync_queue` (`clearQueue()`).
+    4. **Pembersihan Cache Konten OTA (Layer 2):** Menghapus berkas `content_active.json` dan `content_temp.json` dari penyimpanan privat aplikasi sehingga otomatis kembali ke Layer 1 (Bundled Assets).
+  - Jaminan *graceful offline purge*: jika koneksi internet terputus saat memanggil Cloud Function, pembersihan lokal tetap dieksekusi 100% tuntas tanpa gagal.
+- **Antarmuka & Dialog Konfirmasi 2-Langkah (`PurgeDataSection.kt`, `PurgeViewModel.kt`, `PurgeUiState.kt`):**
+  - Menerapkan kepatuhan **TC-PRIV-01**:
+    - **Langkah 1 (Peringatan Dampak):** Dialog peringatan yang merinci seluruh data yang akan dihapus permanen (tempat tersimpan, checklist manasik, relasi tracking cloud, akun anonim, dan berkas OTA).
+    - **Langkah 2 (Konfirmasi Final Permanen):** Dialog konfirmasi merah bertuliskan *“Tindakan ini permanen dan TIDAK DAPAT DIBATALKAN”* dengan tombol aksi raksasa ramah lansia $\ge 56\text{dp}$ (`[ YA, HAPUS PERMANEN ]`).
+    - **State Pemrosesan:** Indikator loading saat pembersihan cloud dan SQLite sedang berlangsung.
+    - **State Sukses:** Dialog umpan balik hijau yang mengonfirmasi bahwa seluruh data telah bersih secara tuntas.
+- **Integrasi Layar Pengaturan (`SettingsScreen.kt`):**
+  - Mengintegrasikan `PurgeDataSection` di bagian bawah layar pengaturan dengan tombol utama berlatar merah (`StatusRedError`).
+- **Pengujian Unit Komprehensif:**
+  - `DataPurgeManagerTest.kt`:
+    - Menguji skenario normal `TC-PRIV-01`: seluruh data Room SQLite kosong (0 entri di checklist, places, dan queue), berkas cache OTA terhapus, pemanggilan API cloud purge & delete account tuntas.
+    - Menguji skenario offline: memastikan basis data lokal tetap terhapus bersih meskipun server cloud tidak terjangkau.
+  - `PurgeViewModelTest.kt`: Menguji transisi alur dialog konfirmasi 2-langkah, pembatalan, eksekusi sukses, penanganan error, dan penutupan pesan umpan balik.
 
 ### TASK-17: OTA Content Update Manager & Hash Check (Selesai pada Commit: 3ad260a)
 - **Model Manifest Pembaruan (`OtaManifest.kt` di `:feature:settings`):**
