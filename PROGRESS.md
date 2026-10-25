@@ -45,10 +45,25 @@
 | **RELEASE-CI**| Automasi CI/CD & Pipeline Distribusi   | ✅ **SELESAI** | 25-10-2026 | `.github/workflows` (`ci.yml`, `release.yml`), `proguard-rules.pro`, laman unduh mandiri `distribution/index.html`, manifest OTA, skrip hashing SHA-256. |
 | **AUDIT-31** | Technical & Security Audit Checklist   | ✅ **SELESAI** | 25-10-2026 | Kepatuhan penuh Bagian 31 & 28 SDD: Zero secrets, Firestore deny-by-default, IDOR protection, penolakan cleartext TLS 1.3, Android 14+ location service, Proguard PII stripping, 192 automated tests (100% pass), penerbitan `AUDIT_REPORT.md`. |
 | **FASE-04-OEM**| Validasi Lapangan & OEM Whitelist (Fase 4)| ✅ **SELESAI** | 25-10-2026 | Deteksi vendor OEM (Xiaomi, Oppo, Vivo, Samsung), intent auto-start/battery saver, `BatteryWhitelistCard` lansia $\ge 56\text{dp}$, `FIELD_VALIDATION_PROTOCOL.md` (benchmark 4 jam TC-BAT-01, observasi anti-silent kill, form uji lapangan). |
+| **FASE-05-DIST**| Distribusi Sideload, Kit Cetak & Play Protect (Fase 5)| ✅ **SELESAI** | 26-10-2026 | Dokumen banding Google Play Protect (`PLAY_PROTECT_APPEAL.md`), lembar panduan saku fisik A4 siap cetak (`POCKET_GUIDE_CHEAT_SHEET.md`), dan integrasi web `distribution/index.html`. |
 
 ---
 
 ## 2. LOG EKSEKUSI TUGAS SELESAI
+
+### FASE-05-DIST: Distribusi Sideload, Kit Cetak & Play Protect (Selesai pada Commit: b07b7aa)
+- **Dokumen Permohonan Google Play Protect (`distribution/PLAY_PROTECT_APPEAL.md`):**
+  - Menerapkan kepatuhan Bagian 31 & Bagian 35 `SYSTEM_DESIGN_DOCUMENT.md` serta persiapan mitigasi pencegahan dialog blokir pada perangkat jemaah:
+    - Rincian deklarasi teknis justifikasi izin lokasi (`ACCESS_FINE_LOCATION`, `FOREGROUND_SERVICE_LOCATION`) berbasis *Just-in-Time* (`FR-ONB-002`) dan notifikasi status bar persisten.
+    - Deklarasi non-komersial dan perlindungan privasi UU PDP No. 27/2022 (zero ads, zero monetization, zero logging PII koordinat, hak penghapusan data mutlak).
+    - Templat surat permohonan resmi dalam Bahasa Inggris untuk diajukan ke portal Google Play Protect Appeal (`https://support.google.com/googleplay/android-developer/contact/protectappeals`) pada H-45 sebelum keberangkatan kloter pertama.
+- **Lembar Panduan Saku Fisik Rombongan Siap Cetak (`distribution/POCKET_GUIDE_CHEAT_SHEET.md`):**
+  - Format 1 lembar A4 bolak-balik (Front & Back) siap cetak (*print-ready layout*):
+    - **Sisi Depan (Pemasangan & Baterai):** Tautan dan kode QR unduh APK, 3 langkah pemasangan sumber tidak dikenal, petunjuk penanganan dialog Play Protect (*Tetap Pasang / Install anyway*), dan tabel langkah cepat setelan baterai vendor (Xiaomi, Samsung, Oppo, Vivo).
+    - **Sisi Belakang (Operasional Lapangan di Tanah Suci):** Cara menandai tenda Mina/hotel dalam 1 sentuhan, cara membaca panah kompas spasial & kalibrasi gerakan angka 8, cara menghubungkan pelacakan keluarga via barcode 5 menit, dan tombol darurat hapus data permanen.
+- **Penyempurnaan Laman Unduhan Mandiri (`distribution/index.html`):**
+  - Menambahkan banner peringatan khusus penanganan dialog peringatan Google Play Protect berwarna amber yang jelas dan mudah dipahami jemaah.
+  - Menambahkan kartu unduhan khusus untuk mengakses lembar panduan saku fisik A4 bagi ketua kloter dan pembimbing ibadah.
 
 ### FASE-04-OEM: Validasi Lapangan & OEM Whitelist (Selesai pada Commit: 67e7fdc)
 - **Komponen Deteksi Produsen & Intent Helper (`OemVendor.kt` & `OemBatteryWhitelistHelper.kt`):**
