@@ -36,7 +36,38 @@
 | **TASK-11**  | Firebase Auth Anonymous & Token DTO     | ✅ **SELESAI** | 25-10-2026 | Modul `:core:network` (`AuthManager`, `DefaultFirebaseAuthManager`, DTOs Token/QR, `TrackingApiClient`, dan unit tests). |
 | **TASK-12**  | Cloud Functions: Pairing Token Exchange | ✅ **SELESAI** | 25-10-2026 | `/backend/functions` (`index.ts`, `tokenService.ts`, rate limit 3/15m, transaksi atomik anti-replay, purge data, unit tests). |
 | **TASK-13**  | Firestore Security Rules Penegakan RBAC | ✅ **SELESAI** | 25-10-2026 | `/backend/firestore.rules` (RBAC, consent verification `hasActiveTrackingConsent`, anti-IDOR, emulator config, unit tests). |
-| **TASK-14**  | Android Location Foreground Service     | 🟡 **NEXT** | - | Modul `:feature:tracking` (`TrackingForegroundService.kt`, Android 14+). |
+| **TASK-14**  | Android Location Foreground Service     | ✅ **SELESAI** | 25-10-2026 | Modul `:feature:tracking` (`LocationTrackingService.kt`, adaptif 30s/300s, ongoing notification, Android 14+ location type, unit tests). |
+| **TASK-15**  | Offline Location Queue & Sync Manager   | 🟡 **NEXT** | - | Modul `:core:database`, `:feature:tracking` (`location_sync_queue`, FIFO 50, `SyncManager`). |
+
+---
+
+## 2. LOG EKSEKUSI TUGAS SELESAI
+
+### TASK-14: Android Location Foreground Service (Selesai pada Commit: 603ac97)
+- **Kepatuhan Android 14+ / API 34+ (`feature/tracking/src/main/AndroidManifest.xml`):**
+  - Deklarasi layanan dengan atribut eksplisit `android:foregroundServiceType="location"` dan `android:exported="false"`.
+  - Deklarasi izin runtime `FOREGROUND_SERVICE`, `FOREGROUND_SERVICE_LOCATION`, `ACCESS_FINE_LOCATION`, `ACCESS_COARSE_LOCATION`, dan `POST_NOTIFICATIONS`.
+- **Mesin Klasifikasi Mobilitas Adaptif (`MovementClassifier.kt`):**
+  - Penegakan penghematan daya baterai (NFR-BAT-001: konsumsi baterai $\le 2.5\%$/jam):
+    - **Mode Bergerak (Moving Window):** Kecepatan $> 0.5\text{ m/s}$ (~$1.8\text{ km/jam}$) atau pergeseran posisi $> 10\text{ meter}$ menghasilkan interval sampling $30\text{ detik}$.
+    - **Mode Diam (Stationary Window):** Saat jemaah istirahat di dalam tenda Mina atau masjid (kecepatan $\le 0.5\text{ m/s}$ dan pergeseran $< 10\text{ meter}$ selama $> 3\text{ menit}$), interval sampling otomatis diperpanjang menjadi $5\text{ menit}$ ($300\text{ detik}$).
+    - Jika jemaah kembali bergerak, sistem seketika kembali ke interval $30\text{ detik}$ tanpa jeda.
+- **Notifikasi Status Bar Persisten (`TrackingNotificationHelper.kt`):**
+  - Notification channel `channel_hajj_tracking` bertipe `IMPORTANCE_LOW` (hening tanpa suara berulang).
+  - Properti `setOngoing(true)` sehingga notifikasi tidak dapat di-swipe dismiss saat layanan pelacakan aktif (FR-TRACK-004).
+  - Menampilkan status dinamis real-time ("Bergerak / Istirahat", timestamp update terakhir) dan tombol aksi cepat `[ Hentikan ]` dan `[ Buka Aplikasi ]`.
+- **Layanan Latar Belakang Android (`LocationTrackingService.kt`):**
+  - Menginisialisasi `startForeground()` dengan tipe `FOREGROUND_SERVICE_TYPE_LOCATION` via `ServiceCompat`.
+  - Mengintegrasikan `FusedLocationProviderClient` dengan `Priority.PRIORITY_HIGH_ACCURACY`.
+  - Mengatur ulang interval permintaan lokasi secara dinamis saat terjadi transisi mode mobilitas dari `MovementClassifier`.
+  - Menyediakan callback `locationListener` untuk meneruskan sampel koordinat ke antrean sinkronisasi offline (TASK-15).
+  - Mempublikasikan state reaktif publik `TrackingServiceStatus` (`isRunning`, `movementMode`, `lastLocation`, `totalUpdatesCount`).
+- **Pengendali Layanan (`TrackingServiceController.kt`):**
+  - Menyediakan abstraksi `TrackingController` untuk pemanggilan `startTracking(context, userId)` dan `stopTracking(context)` dari UI dan ViewModel.
+- **Pengujian Unit & Validasi:**
+  - `MovementClassifierTest.kt`: Pengujian kondisi awal moving (30s), mobilitas kecepatan tinggi, periode toleransi diam 3 menit, transisi ke stationary (300s), transisi balik saat bergerak, dan reset status.
+  - `TrackingServiceStatusTest.kt`: Pengujian state awal dan pembaruan atribut model status.
+  - Skrip mandiri Python: 100% validasi sintaksis kurung pada 7 file Kotlin di `:feature:tracking` dan simulasi matematis pergerakan.
 
 ---
 
