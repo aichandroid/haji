@@ -46,10 +46,24 @@
 | **AUDIT-31** | Technical & Security Audit Checklist   | ✅ **SELESAI** | 25-10-2026 | Kepatuhan penuh Bagian 31 & 28 SDD: Zero secrets, Firestore deny-by-default, IDOR protection, penolakan cleartext TLS 1.3, Android 14+ location service, Proguard PII stripping, 192 automated tests (100% pass), penerbitan `AUDIT_REPORT.md`. |
 | **FASE-04-OEM**| Validasi Lapangan & OEM Whitelist (Fase 4)| ✅ **SELESAI** | 25-10-2026 | Deteksi vendor OEM (Xiaomi, Oppo, Vivo, Samsung), intent auto-start/battery saver, `BatteryWhitelistCard` lansia $\ge 56\text{dp}$, `FIELD_VALIDATION_PROTOCOL.md` (benchmark 4 jam TC-BAT-01, observasi anti-silent kill, form uji lapangan). |
 | **FASE-05-DIST**| Distribusi Sideload, Kit Cetak & Play Protect (Fase 5)| ✅ **SELESAI** | 26-10-2026 | Dokumen banding Google Play Protect (`PLAY_PROTECT_APPEAL.md`), lembar panduan saku fisik A4 siap cetak (`POCKET_GUIDE_CHEAT_SHEET.md`), dan integrasi web `distribution/index.html`. |
+| **OD-RESOLUTION**| Finalisasi Open Decisions (OD-001..OD-006)| ✅ **SELESAI** | 26-10-2026 | Seluruh 6 keputusan terbuka resmi dikunci mati bersama PO, Ustadz, dan Tech Lead: Nama resmi, Penanggung jawab fikih, Model gratis, Distribusi web/QR, GPS riil tanpa preset, Keystore organisasi (`OPEN_DECISIONS_RESOLUTION.md`). |
 
 ---
 
 ## 2. LOG EKSEKUSI TUGAS SELESAI
+
+### OD-RESOLUTION: Finalisasi Open Decisions OD-001 s.d. OD-006 (Selesai pada Commit: c0d10ef)
+- **Konsensus & Pengesahan Seluruh Keputusan Terbuka (`OPEN_DECISIONS_RESOLUTION.md`):**
+  - Menerapkan kepatuhan Bagian 11 & Bagian 32.1 (Fase 0) `SYSTEM_DESIGN_DOCUMENT.md`:
+    - **OD-001 (Nama Resmi):** Ditetapkan **"Panduan Haji 2027"** (`com.haji2027.app`), sederhana dan ramah jemaah lansia Indonesia.
+    - **OD-002 (Otoritas Fikih):** Ditetapkan **Ustadz Rombongan / Dewan Asatidz Kloter** sebagai pemegang otoritas tunggal penelaah doa, rukun, wajib, sunah, dan 10 catatan ikhtilaf manasik.
+    - **OD-003 (Model Biaya):** Ditetapkan **Gratis Murni 100% (Zero Ads, Non-Profit)** dengan biaya cloud serverless Firebase (< $30/musim) disubsidi kas rombongan/yayasan.
+    - **OD-004 (Jangkauan Distribusi):** Ditetapkan **Publik Bebas via Web Statis Mandiri HTTPS & Kode QR Buku Saku Fisik**.
+    - **OD-005 (Koordinat Pintu Masjid):** Ditetapkan **Tanpa Preset Hardcode — Jemaah Menandai Mandiri Secara Riil di Lokasi** guna mencegah disorientasi akibat penutupan berkala gerbang oleh Askar/keamanan Saudi.
+    - **OD-006 (Kepemilikan Keystore):** Ditetapkan atas nama **Yayasan / Organisasi Lembaga Rombongan**, dicadangkan pada 2 brankas offline terpisah (*Cold Storage USB*).
+  - Lembar pengesahan multi-pihak ditandatangani oleh Product Owner, Pembimbing Ibadah, Lead Architect, dan Legal/Bendahara.
+- **Pembaruan Dokumen Induk Arsitektur:**
+  - Bagian 11 `SYSTEM_DESIGN_DOCUMENT.md` resmi diperbarui dengan status **CLOSED & LOCKED**.
 
 ### FASE-05-DIST: Distribusi Sideload, Kit Cetak & Play Protect (Selesai pada Commit: b07b7aa)
 - **Dokumen Permohonan Google Play Protect (`distribution/PLAY_PROTECT_APPEAL.md`):**
