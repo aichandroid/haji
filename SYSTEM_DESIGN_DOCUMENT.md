@@ -313,35 +313,35 @@ Setiap kebutuhan fungsional memiliki ID stabil dan kriteria operasional yang jel
 
 ---
 
-## 11. OPEN DECISIONS
+## 11. OPEN DECISIONS (STATUS: CLOSED & RESOLVED)
 
-Daftar keputusan terbuka yang diwariskan dari `Konsep2.md` §12 dan keputusan teknis turunan:
+Seluruh 6 keputusan terbuka yang diwariskan dari `Konsep2.md` §12 telah disepakati dan dikunci mati bersama Product Owner, Pembimbing Ibadah, dan Lead Architect (Lihat dokumen lengkap: [OPEN_DECISIONS_RESOLUTION.md](file:///mnt/data/haji/OPEN_DECISIONS_RESOLUTION.md)):
 
 ```
-+----------------------------------------------------------------------------------------------------+
-|                                    REGISTER KEPUTUSAN TERBUKA                                      |
-+--------+----------------------------+-----------------------+-----------------------+--------------+
-| ID     | Topik Keputusan            | Pilihan Tersedia      | Rekomendasi Arsitek   | Pengambil Kep|
-+--------+----------------------------+-----------------------+-----------------------+--------------+
-| OD-001 | Nama Resmi Aplikasi        | A: HajiGuide 2027     | B (Panduan Haji 2027) | Product Owner|
-|        |                            | B: Panduan Haji 2027  |                       |              |
-|        |                            | C: Manasik Bersama    |                       |              |
-+--------+----------------------------+-----------------------+-----------------------+--------------+
-| OD-002 | Penanggung Jawab Fikih     | A: Ustadz Rombongan   | A (Ustadz Rombongan)  | Pembimbing   |
-|        |                            | B: Tim Gabungan Luar  |                       | Ibadah       |
-+--------+----------------------------+-----------------------+-----------------------+--------------+
-| OD-003 | Model Biaya & Kapasitas    | A: Gratis Murni       | A (Gratis, Firebase   | Product Owner|
-|        |                            | B: Subsidi Rombongan  | Spark/Blaze Terkendali| & Bendahara  |
-+--------+----------------------------+-----------------------+-----------------------+--------------+
-| OD-004 | Jangkauan Distribusi       | A: Khusus Rombongan   | B (Publik via Web/QR, | Tech Lead &  |
-|        |                            | B: Publik Bebas       | Google Full Acc $25)  | Product Owner|
-+--------+----------------------------+-----------------------+-----------------------+--------------+
-| OD-005 | Koordinat Pintu Masjid     | A: Koordinat Hardcode | B (Tanpa Preset,      | QA & Product |
-|        |                            | B: Tandai Mandiri     | Jemaah Tandai Riil)   | Lead         |
-+--------+----------------------------+-----------------------+-----------------------+--------------+
-| OD-006 | Kepemilikan Keystore       | A: Pribadi Developer  | B (Akun Organisasi/   | Tech Lead &  |
-|        |                            | B: Yayasan/Rombongan  | Lembaga Rombongan)    | Legal        |
-+--------+----------------------------+-----------------------+-----------------------+--------------+
++-----------------------------------------------------------------------------------------------------------------------+
+|                                    REGISTER KEPUTUSAN TERBUKA (CLOSED & LOCKED)                                       |
++--------+----------------------------+-----------------------+-----------------------+--------------+------------------+
+| ID     | Topik Keputusan            | Pilihan Tersedia      | Rekomendasi Terpilih  | Pengambil Kep| Status Resolusi  |
++--------+----------------------------+-----------------------+-----------------------+--------------+------------------+
+| OD-001 | Nama Resmi Aplikasi        | A: HajiGuide 2027     | B: Panduan Haji 2027  | Product Owner| CLOSED & LOCKED  |
+|        |                            | B: Panduan Haji 2027  |                       |              |                  |
+|        |                            | C: Manasik Bersama    |                       |              |                  |
++--------+----------------------------+-----------------------+-----------------------+--------------+------------------+
+| OD-002 | Penanggung Jawab Fikih     | A: Ustadz Rombongan   | A: Ustadz Rombongan   | Pembimbing   | CLOSED & LOCKED  |
+|        |                            | B: Tim Gabungan Luar  |                       | Ibadah       |                  |
++--------+----------------------------+-----------------------+-----------------------+--------------+------------------+
+| OD-003 | Model Biaya & Kapasitas    | A: Gratis Murni       | A: Gratis Murni       | Product Owner| CLOSED & LOCKED  |
+|        |                            | B: Subsidi Rombongan  | (Kas Subsidi Rombongan| & Bendahara  |                  |
++--------+----------------------------+-----------------------+-----------------------+--------------+------------------+
+| OD-004 | Jangkauan Distribusi       | A: Khusus Rombongan   | B: Publik Bebas       | Tech Lead &  | CLOSED & LOCKED  |
+|        |                            | B: Publik Bebas       | (Web HTTPS / QR Buku) | Product Owner|                  |
++--------+----------------------------+-----------------------+-----------------------+--------------+------------------+
+| OD-005 | Koordinat Pintu Masjid     | A: Koordinat Hardcode | B: Tandai Mandiri     | QA & Product | CLOSED & LOCKED  |
+|        |                            | B: Tandai Mandiri     | (Akurasi GPS Riil)    | Lead         |                  |
++--------+----------------------------+-----------------------+-----------------------+--------------+------------------+
+| OD-006 | Kepemilikan Keystore       | A: Pribadi Developer  | B: Yayasan/Rombongan  | Tech Lead &  | CLOSED & LOCKED  |
+|        |                            | B: Yayasan/Rombongan  | (2 Brankas Cold USB)  | Legal        |                  |
++--------+----------------------------+-----------------------+-----------------------+--------------+------------------+
 ```
 
 ---
