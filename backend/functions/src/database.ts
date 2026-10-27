@@ -22,6 +22,7 @@ export interface FirestoreDatabase {
   revokeTrackingRelation(targetUid: string, trackerUid: string, now: number): Promise<void>;
   purgeAllUserData(userId: string): Promise<void>;
   updateLocation(location: UserLocationDoc): Promise<void>;
+  purgeAllTelemetry(): Promise<{ locationsCount: number; relationsCount: number; tokensCount: number }>;
 }
 
 /**
@@ -192,5 +193,24 @@ export class AdminFirestoreDatabase implements FirestoreDatabase {
       .collection("locations")
       .doc(location.user_id)
       .set(location);
+  }
+
+  async purgeAllTelemetry(): Promise<{ locationsCount: number; relationsCount: number; tokensCount: number }> {
+    const locationsSnap = await this.db.collection("locations").get();
+    const relationsSnap = await this.db.collection("tracking_relations").get();
+    const tokensSnap = await this.db.collection("pairing_tokens").get();
+
+    const batch = this.db.batch();
+    locationsSnap.docs.forEach((doc) => batch.delete(doc.ref));
+    relationsSnap.docs.forEach((doc) => batch.delete(doc.ref));
+    tokensSnap.docs.forEach((doc) => batch.delete(doc.ref));
+
+    await batch.commit();
+
+    return {
+      locationsCount: locationsSnap.size,
+      relationsCount: relationsSnap.size,
+      tokensCount: tokensSnap.size
+    };
   }
 }

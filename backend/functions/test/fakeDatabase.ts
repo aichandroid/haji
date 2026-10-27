@@ -128,4 +128,14 @@ export class FakeFirestoreDatabase implements FirestoreDatabase {
   async updateLocation(location: UserLocationDoc): Promise<void> {
     this.locations.set(location.user_id, { ...location });
   }
+
+  async purgeAllTelemetry(): Promise<{ locationsCount: number; relationsCount: number; tokensCount: number }> {
+    const locationsCount = this.locations.size;
+    const relationsCount = this.relations.size;
+    const tokensCount = this.tokens.size;
+    this.locations.clear();
+    this.relations.clear();
+    this.tokens.clear();
+    return { locationsCount, relationsCount, tokensCount };
+  }
 }

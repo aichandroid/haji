@@ -1,0 +1,48 @@
+name: Deploy Sideloading Portal to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'distribution/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Verify Distribution Files
+        run: |
+          test -f distribution/index.html || { echo "index.html missing"; exit 1; }
+          test -f distribution/manifest.json || { echo "manifest.json missing"; exit 1; }
+          test -f distribution/pocket_guide_print.html || { echo "pocket_guide_print.html missing"; exit 1; }
+          echo "All distribution static artifacts present."
+
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'distribution/'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

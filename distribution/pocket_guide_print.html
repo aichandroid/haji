@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lembar Panduan Saku Jemaah — Panduan Haji 2027 (A4 Siap Cetak)</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 12mm 15mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    body {
+      color: #0F172A;
+      background: #FFFFFF;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .page {
+      width: 100%;
+      height: auto;
+      page-break-after: always;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page:last-child {
+      page-break-after: avoid;
+    }
+
+    .header-box {
+      border-bottom: 2px solid #0C4A6E;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-box h1 {
+      font-size: 18px;
+      color: #0C4A6E;
+      font-weight: 800;
+    }
+
+    .header-box .badge {
+      background: #0C4A6E;
+      color: #FFFFFF;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 4px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      color: #0369A1;
+      font-weight: 700;
+      border-left: 4px solid #0369A1;
+      padding-left: 8px;
+      margin: 10px 0 6px 0;
+    }
+
+    .box-info {
+      background: #F8FAFC;
+      border: 1px solid #CBD5E1;
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin-bottom: 8px;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .step-card {
+      border: 1px solid #94A3B8;
+      border-radius: 6px;
+      padding: 8px;
+      background: #FFFFFF;
+    }
+
+    .step-card strong {
+      color: #0C4A6E;
+      display: block;
+      margin-bottom: 4px;
+      font-size: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 8px 0;
+      font-size: 11.5px;
+    }
+
+    table th, table td {
+      border: 1px solid #94A3B8;
+      padding: 6px 8px;
+      text-align: left;
+    }
+
+    table th {
+      background: #F1F5F9;
+      color: #0C4A6E;
+      font-weight: 700;
+    }
+
+    .highlight-red {
+      color: #B91C1C;
+      font-weight: 700;
+    }
+
+    .highlight-green {
+      color: #15803D;
+      font-weight: 700;
+    }
+
+    .btn-print-screen {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      background: #15803D;
+      color: #FFF;
+      border: none;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    @media print {
+      .btn-print-screen {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <button class="btn-print-screen" onclick="window.print()">🖨️ CETAK LEMBAR SAKU (A4)</button>
+
+  <!-- HALAMAN 1 (SISI DEPAN) -->
+  <div class="page">
+    <div class="header-box">
+      <div>
+        <h1>PANDUAN PEMASANGAN & PENGHEMAT DAYA (SISI 1)</h1>
+        <p style="font-size: 11px; color: #475569;">Aplikasi Panduan Haji 2027 • 100% Offline-First • Ramah Lansia</p>
+      </div>
+      <div class="badge">SISI DEPAN</div>
+    </div>
+
+    <div class="section-title">1. CARA MENGUNDUH & MEMASANG APLIKASI (SIDELOADING)</div>
+    <div class="box-info">
+      <strong>Tautan Resmi Unduh:</strong> <code>https://unduh.panduanhaji2027.org</code> (~18 MB, Bebas Kuota Roaming).<br>
+      Ketik tautan pada browser ponsel (Chrome/Samsung Internet) atau pindai barcode buku manasik rombongan.
+    </div>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <strong>LANGKAH 1: Unduh APK</strong>
+        Ketuk tombol hijau "UNDUH APK RESMI". Berkas <code>panduan-haji-2027-v1.0.0.apk</code> akan tersimpan di ponsel.
+      </div>
+      <div class="step-card">
+        <strong>LANGKAH 2: Buka Berkas</strong>
+        Tarik layar atas ke bawah, ketuk berkas APK yang selesai diunduh. Jika muncul izin, pilih <em>Setelan -> Izinkan sumber ini</em>.
+      </div>
+      <div class="step-card" style="grid-column: span 2; border: 2px solid #D97706; background: #FFFBEB;">
+        <strong style="color: #92400E;">LANGKAH 3 (PENTING!): JIKA MUNCUL DIALOG GOOGLE PLAY PROTECT</strong>
+        Jika layar menampilkan peringatan pemblokiran instalasi luar Play Store:<br>
+        1. Ketuk tulisan kecil <u style="color: #B45309; font-weight: bold;">"Rincian lainnya" (More details)</u> di bagian bawah.<br>
+        2. Lalu ketuk <u style="color: #B45309; font-weight: bold;">"Tetap pasang" (Install anyway)</u>.<br>
+        <em>Aplikasi ini 100% aman, nirlaba, bebas iklan, dan diverifikasi tanpa virus/malware.</em>
+      </div>
+    </div>
+
+    <div class="section-title">2. SETELAN WAJIB BATERAI PONSEL (AGAR GPS TIDAK MATI SENDIRI)</div>
+    <p style="font-size: 11.5px; margin-bottom: 4px;">Penting disetel di tanah air agar saat di Arafah & Mina, pelacakan darurat tidak tertutup sepihak oleh sistem ponsel:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 25%;">Merek Ponsel</th>
+          <th>Langkah Pengaturan Mulai Otomatis & Daya</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Xiaomi / Redmi / POCO</strong></td>
+          <td>
+            1. Buka <em>Pengaturan -> Aplikasi -> Kelola Aplikasi -> Panduan Haji 2027</em>.<br>
+            2. Aktifkan <strong>"Mulai Otomatis" (Auto-start)</strong>.<br>
+            3. Pada menu Penghemat Baterai, pilih <strong>"Tidak Ada Pembatasan" (No Restrictions)</strong>.<br>
+            4. Buka Recent Apps (tombol kotak), tahan aplikasi lalu ketuk ikon <strong>GEMBOK</strong>.
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Samsung (Galaxy)</strong></td>
+          <td>
+            1. Buka <em>Pengaturan -> Perawatan Perangkat -> Baterai</em>.<br>
+            2. Pilih <em>Batas Penggunaan Latar Belakang</em>.<br>
+            3. Pilih <strong>"Aplikasi yang tidak pernah tidur"</strong> -> Tambahkan <em>Panduan Haji 2027</em>.
+          </td>
+        </tr>
+        <tr>
+          <td><strong>OPPO / Realme</strong></td>
+          <td>
+            1. Buka <em>Pengaturan -> Manajemen Aplikasi -> Panduan Haji 2027</em>.<br>
+            2. Izinkan <strong>"Mulai Otomatis" (Auto-launch)</strong>.<br>
+            3. Izinkan <strong>"Aktivitas Latar Belakang Penuh"</strong> tanpa batas daya.
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Vivo / iQOO</strong></td>
+          <td>
+            1. Buka <em>Pengaturan -> Baterai -> Konsumsi Daya Latar Belakang Tinggi</em>.<br>
+            2. Cari <em>Panduan Haji 2027</em> -> Pilih <strong>"Izinkan Penggunaan Daya Latar Belakang"</strong>.<br>
+            3. Aktifkan Izin "Mulai Otomatis" di menu Pengelola Izin.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- HALAMAN 2 (SISI BELAKANG) -->
+  <div class="page">
+    <div class="header-box">
+      <div>
+        <h1>PANDUAN OPERASIONAL LAPANGAN DI TANAH SUCI (SISI 2)</h1>
+        <p style="font-size: 11px; color: #475569;">Aplikasi Panduan Haji 2027 • Navigasi Kompas Spasial & Pelacakan Keluarga</p>
+      </div>
+      <div class="badge" style="background: #15803D;">SISI BELAKANG</div>
+    </div>
+
+    <div class="section-title">3. CARA MENANDAI TEMPAT (TENDA MINA / PINTU MASJID / HOTEL)</div>
+    <div class="box-info">
+      <strong>Kapan Dilakukan:</strong> Segera saat jemaah pertama kali tiba di lokasi (berdiri di area terbuka yang menghadap langit).<br>
+      1. Buka aplikasi, ketuk tombol biru besar di tengah: <strong>[ TEMPAT SAYA ]</strong>.<br>
+      2. Ketuk tombol <strong>[ + TANDAI TEMPAT INI ]</strong>.<br>
+      3. Tunggu 3 detik saat GPS menstabilkan akurasi (mengambil 5 sampel terbaik).<br>
+      4. Ketik nama tempat (contoh: <em>"Tenda Maktab 42 Mina"</em>) lalu ketuk <strong>[ SIMPAN ]</strong>.
+    </div>
+
+    <div class="section-title">4. CARA MENEMUKAN ARAH PULANG DENGAN KOMPAS PANAH</div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <strong>Membaca Panah Hijau</strong>
+        1. Buka menu <em>[ TEMPAT SAYA ]</em> -> Pilih nama tempat tersimpan.<br>
+        2. Pegang ponsel mendatar setinggi dada sejajar tanah.<br>
+        3. Putar tubuh Anda sampai ujung panah menunjuk lurus ke depan. Ikuti arah panah tersebut.
+      </div>
+      <div class="step-card">
+        <strong>Arti Lampu Sinyal Akurasi</strong>
+        • <span class="highlight-green">HIJAU:</span> GPS sangat akurat (&le; 10 meter).<br>
+        • <span style="color: #D97706; font-weight: bold;">KUNING:</span> Akurasi sedang (11–30 meter).<br>
+        • <span class="highlight-red">MERAH:</span> Sinyal GPS lemah / jemaah di dalam gedung beton/basement.
+      </div>
+      <div class="step-card" style="grid-column: span 2; background: #F0FDF4; border-color: #86EFAC;">
+        <strong style="color: #15803D;">BILA PANAH BERPUTAR LIAR (GANGGUAN MAGNET TIANG BAJA):</strong>
+        Jangan panik! Ayunkan ponsel Anda membentuk <strong>gerakan angka 8 di udara sebanyak 2 hingga 3 kali</strong>. Sensor kompas akan otomatis terkalibrasi normal kembali.
+      </div>
+    </div>
+
+    <div class="section-title">5. CARA MENGHUBUNGKAN PELACAKAN KELUARGA (QR 5 MENIT)</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 50%;">Jemaah Lansia (Yang Dilacak)</th>
+          <th style="width: 50%;">Pendamping / Anak / Ketua Regu (Pelacak)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            1. Buka menu <strong>[ KELUARGA ]</strong>.<br>
+            2. Ketuk tombol <strong>[ BAGIKAN LOKASI SAYA ]</strong>.<br>
+            3. Muncul kode QR acak dengan hitung mundur 5:00 menit.<br>
+            4. Tunjukkan kode QR ke layar HP pendamping.
+          </td>
+          <td>
+            1. Buka menu <strong>[ KELUARGA ]</strong>.<br>
+            2. Ketuk tombol <strong>[ PINDAI KODE QR ]</strong>.<br>
+            3. Arahkan kamera HP ke kode QR di layar jemaah lansia.<br>
+            4. Status langsung <strong>TERHUBUNG</strong> dan posisi terpantau.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="box-info" style="border-left: 4px solid #B91C1C; margin-top: 8px;">
+      <strong class="highlight-red">PENCABUTAN IZIN & HAPUS TOTAL DATA (RIGHT TO BE FORGOTTEN):</strong><br>
+      • Jemaah dapat mencabut izin kapan saja dengan mengetuk <strong>[ CABUT IZIN ]</strong>.<br>
+      • Setelah selesai haji, buka <em>[ PENGATURAN ] -> [ HAPUS SELURUH DATA SAYA ]</em> untuk menghapus bersih 100% data lokasi dari server dan memori ponsel (Sesuai UU PDP No. 27/2022).
+    </div>
+  </div>
+
+</body>
+</html>
