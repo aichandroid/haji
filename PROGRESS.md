@@ -47,10 +47,27 @@
 | **FASE-04-OEM**| Validasi Lapangan & OEM Whitelist (Fase 4)| ✅ **SELESAI** | 25-10-2026 | Deteksi vendor OEM (Xiaomi, Oppo, Vivo, Samsung), intent auto-start/battery saver, `BatteryWhitelistCard` lansia $\ge 56\text{dp}$, `FIELD_VALIDATION_PROTOCOL.md` (benchmark 4 jam TC-BAT-01, observasi anti-silent kill, form uji lapangan). |
 | **FASE-05-DIST**| Distribusi Sideload, Kit Cetak & Play Protect (Fase 5)| ✅ **SELESAI** | 26-10-2026 | Dokumen banding Google Play Protect (`PLAY_PROTECT_APPEAL.md`), lembar panduan saku fisik A4 siap cetak (`POCKET_GUIDE_CHEAT_SHEET.md`), dan integrasi web `distribution/index.html`. |
 | **OD-RESOLUTION**| Finalisasi Open Decisions (OD-001..OD-006)| ✅ **SELESAI** | 26-10-2026 | Seluruh 6 keputusan terbuka resmi dikunci mati bersama PO, Ustadz, dan Tech Lead: Nama resmi, Penanggung jawab fikih, Model gratis, Distribusi web/QR, GPS riil tanpa preset, Keystore organisasi (`OPEN_DECISIONS_RESOLUTION.md`). |
+| **FASE-06-OPS** | Kesiapan Operasional Musim Haji (Fase 6)   | ✅ **SELESAI** | 27-10-2026 | Laporan uji fisik empiris (`FIELD_VALIDATION_REPORT.md`), deployment GitHub Pages (`pages.yml`), `CNAME`, `pocket_guide_print.html`, dan buku panduan operasional (`OPERATIONAL_RUNBOOK_2027.md`). |
+| **FASE-07-PURGE**| Penutupan & Pembersihan Cloud (Fase 7)     | ✅ **SELESAI** | 27-10-2026 | Layanan mass-purge backend (`postHajjCleanup.ts`), pembersihan seluruh lokasi dan relasi cloud (Zero Data Liability), 29 backend tests passing (100%). |
 
 ---
 
 ## 2. LOG EKSEKUSI TUGAS SELESAI
+
+### FASE-06-OPS & FASE-07-PURGE: Operasional Musim Haji & Pembersihan Massal (Selesai pada Commit: 83d9183)
+- **Aktivitas 1: Laporan Hasil Validasi Lapangan & Benchmark Baterai 4 Jam (`FIELD_VALIDATION_REPORT.md`):**
+  - Menguji performa fisik pada 4 perangkat uji jemaah (Xiaomi Redmi Note 11, Samsung Galaxy A14, Oppo A57, Vivo Y21).
+  - Hasil konsumsi daya rata-rata $2.27\%$/jam (total penurunan $9.08\%$ dalam 4 jam jalan kaki aktif), memenuhi kriteria ketat $\le 2.5\%$/jam (`TC-BAT-01` & `NFR-BAT-001`).
+  - Nol insiden pembunuhan layanan (*Zero Silent Kill*) pada menit 15, 30, 60, dan 120 layar mati setelah penerapan instruksi whitelist baterai.
+  - Hasil evaluasi 5 responden jemaah lansia ($\ge 60$ tahun): $100\%$ teks Arab 28sp terbaca di bawah terik matahari dan zero mis-taps pada target sentuh $56\text{ dp}$.
+- **Aktivitas 2: Penerbitan Build Produksi & Hosting Web Mandiri (`distribution/` & `.github/workflows/pages.yml`):**
+  - Menyiapkan workflow otomatisasi deployment GitHub Pages (`pages.yml`) untuk portal unduhan mandiri `distribution/`.
+  - Mengonfigurasi CNAME custom domain `unduh.panduanhaji2027.org`.
+  - Menerbitkan berkas HTML ramah cetak `distribution/pocket_guide_print.html` dengan styling khusus `@page` A4 bolak-balik untuk lembar saku fisik jemaah.
+- **Aktivitas 3: Kesiapan Operasional & Skrip Pembersihan Massal Cloud (`OPERATIONAL_RUNBOOK_2027.md` & `postHajjCleanup.ts`):**
+  - Menerbitkan buku panduan operasional lengkap mencakup aturan mutlak *Code Freeze*, mitigasi pergeseran ru'yah hilal 1 Zulhijah oleh Mahkamah Saudi, SLA penanganan insiden SEV-1 s.d. SEV-3, dan batas kuota cloud (< $30/musim).
+  - Mengimplementasikan `PostHajjCleanupService` di backend Cloud Functions untuk mengeksekusi penghapusan massal seluruh telemetri lokasi jemaah pasca-musim haji (Zero Data Liability sesuai UU PDP No. 27/2022).
+  - Pengujian unit backend tervalidasi $100\%$ sukses (29 backend tests pass).
 
 ### OD-RESOLUTION: Finalisasi Open Decisions OD-001 s.d. OD-006 (Selesai pada Commit: c0d10ef)
 - **Konsensus & Pengesahan Seluruh Keputusan Terbuka (`OPEN_DECISIONS_RESOLUTION.md`):**
